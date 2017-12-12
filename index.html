@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LanguageTransfer 2</title>
+        <meta charset="utf-8">
+        <link href="styles.css" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+        <section class="bar bar--thin navigation">
+            <h1>LanguageTransfer - Complete German</h1>
+        </section>
+        <section class="tracks">
+            <ul id="track-list">
+                <li data-id="229561579">Track 1</li>
+                <li data-id="229564465">Track 2</li>
+                <li data-id="229566441">Track 3</li>
+                <li data-id="229571535">Track 4</li>
+            </ul>
+        </section>
+        <div class="ui-container">
+            <section class="bar hint">
+                <p>Translate: "find them!" to German</p>
+            </section>
+            <section class="bar audio">
+                <iframe width="100%" height="100%" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F&amp;show_teaser=false"></iframe>
+            </section>
+            <section class="bar stop-indicator">
+
+            </section>
+            <section class="bar controls">
+                <button class="controls-skip" id="controls-back">Back</button>
+                <button id="controls-toggle">Play/Pause</button>
+                <button class="controls-skip" id="controls-forward">Forward</button>
+            </section>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://w.soundcloud.com/player/api.js"></script>
+        <script src="scripts.js"></script>
+    </body>
+</html>
