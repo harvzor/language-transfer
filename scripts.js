@@ -1,3 +1,27 @@
+"use strict";
+
+var api = function() {
+    const baseUrl = 'json/';
+
+    var getPlaylist = () => {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: baseUrl + 'tracks.json'
+            })
+            .done((data) => {
+                resolve(data);
+            })
+            .fail(() => {
+                reject();
+            });
+        });
+    };
+
+    return {
+        getPlaylist: getPlaylist
+    };
+}();
+
 var Audio = function () {
     const widget = SC.Widget(document.querySelector('iframe'));
     const url = 'https://api.soundcloud.com/tracks/{id}';
@@ -30,14 +54,31 @@ var Audio = function () {
 };
 
 var trackList = function(audio) {
-    const $trackListItems = $('#track-list li');
+    const $trackList = $('#track-list');
 
-    $trackListItems.on('click', function() {
-        var $this = $(this);
-        var id = $this.data('id');
+    api.getPlaylist()
+        .then(data => {
+            data.tracks.forEach((track, index) => {
+                $trackList.append(
+                    $('<li/>')
+                        .append(
+                            $('<a/>', {
+                                'data-id': track.id,
+                                href: track.id,
+                                text: 'Track ' + (index + 1)
+                            })
+                            .on('click', function(e) {
+                                let $this = $(this);
+                                let id = $this.data('id');
 
-        audio.changeTrack(id);
-    });
+                                e.preventDefault();
+
+                                audio.changeTrack(id);
+                            })
+                        )
+                );
+            });
+        });
 };
 
 var controls = function(audio) {
