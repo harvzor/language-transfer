@@ -19,12 +19,17 @@ p {
 }
 
 .navigation {
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
     padding:0 10px;
 }
 
 .bar {
     height:75px;
     border-bottom:1px solid black;
+    background-color:white;
 }
 
 .bar:last-child {
@@ -69,8 +74,10 @@ p {
 .tracks {
     position:absolute;
     width:100%;
-    height:calc(100% - 270px - 50px);
+    margin-top:50px;
     overflow:scroll;
+    z-index:-1;
+    padding-bottom:270px;
 }
 
 .tracks ul {

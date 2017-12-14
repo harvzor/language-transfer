@@ -26,6 +26,26 @@ var Audio = function () {
     const widget = SC.Widget(document.querySelector('iframe'));
     const url = 'https://api.soundcloud.com/tracks/{id}';
 
+    let stateChange = () => {
+        this.stateChangeFunctions.forEach(func => func(this.hasStarted, this.isPaused));
+    };
+
+    this.hasStarted = null;
+    this.isPaused = null;
+
+    widget.bind(SC.Widget.Events.PLAY, () => {
+        this.isPaused = false;
+        this.hasStarted = true;
+
+        stateChange();
+    });
+
+    widget.bind(SC.Widget.Events.PAUSE, () => {
+        this.isPaused = true;
+
+        stateChange();
+    });
+
     this.addSeconds = (seconds) => {
         widget.getPosition((milliseconds) => {
             widget.seekTo(milliseconds + (seconds * 1000));
@@ -50,7 +70,13 @@ var Audio = function () {
             download: false,
             show_artwork: false
         });
+
+        this.hasStarted = false;
+
+        stateChange();
     };
+
+    this.stateChangeFunctions = [];
 };
 
 var trackList = function(audio) {
@@ -85,6 +111,20 @@ var controls = function(audio) {
     const $controlsBack = $('#controls-back');
     const $controlsForward = $('#controls-forward');
     const $controlsToggle = $('#controls-toggle');
+
+    audio.stateChangeFunctions.push((hasStarted, isPaused) => {
+        if (!hasStarted) {
+            $controlsToggle.text('Play')
+
+            return;
+        }
+
+        if (isPaused) {
+            $controlsToggle.text('Resume')
+        } else {
+            $controlsToggle.text('Pause')
+        }
+    });
 
     $controlsBack.on('click', function() {
         audio.addSeconds(-5);
