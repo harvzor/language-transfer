@@ -1,5 +1,7 @@
 "use strict";
 
+const noSleep = new NoSleep();
+
 var Track = function(track) {
     this.id = track.id || null;
     this.complete = track.complete || false;
@@ -23,8 +25,29 @@ var storage = function() {
         };
     }();
 
+    let settings = function() {
+        let key = 'settings';
+
+        let get = () => {
+            return JSON.parse(localStorage.getItem(key));
+        };
+
+        let set = (data) => {
+            // Keep awake won't run unless on a click event, so saving it is pointless.
+            data.keepAwake = false;
+
+            localStorage.setItem(key, JSON.stringify(data));
+        };
+
+        return {
+            get: get,
+            set: set
+        };
+    }();
+
     return {
-        tracks: tracks
+        tracks: tracks,
+        settings: settings
     };
 }();
 
@@ -84,6 +107,62 @@ var api = function() {
         getPlaylist: getPlaylist
     };
 }();
+
+var settingsUi = function() {
+    let settings = storage.settings.get() || {
+        keepAwake: false,
+        autoStop: false
+    };
+
+    const $keepAwake = $('input[name="keepAwake"]');
+    const $autoStop = $('input[name="autoStop"]');
+    const $settingsPage = $('.settings-page');
+
+    /**
+     * @private
+     */
+    let toggleOpen = () => {
+        $settingsPage.toggleClass('hidden');
+    };
+
+    /**
+     * @private
+     */
+    let save = () => {
+        storage.settings.set(settings);
+    };
+
+    let toggleNoSleep = () => {
+        if (settings.keepAwake) {
+            noSleep.enable();
+        } else {
+            noSleep.disable();
+        }
+    };
+
+    $('.navigation-settings').on('click', (e) => {
+        e.preventDefault();
+
+        toggleOpen();
+    });
+    console.log(settings);
+
+    $keepAwake.prop('checked', settings.keepAwake);
+    $autoStop.prop('checked', settings.autoStop);
+
+    $keepAwake.on('change', function() {
+        settings.keepAwake = this.checked;
+
+        toggleNoSleep();
+        //save();
+    });
+
+    $autoStop.on('change', function() {
+        settings.autoStop = this.checked;
+
+        save();
+    });
+};
 
 var Audio = function () {
     const widget = SC.Widget(document.querySelector('iframe'));
@@ -226,6 +305,7 @@ var controls = function(audio) {
 $(document).ready(function() {
     const audio = new Audio();
 
+    settingsUi();
     trackList(audio);
     controls(audio);
 });
