@@ -11,7 +11,7 @@ var courseList = function() {
                         .append(
                             $('<a/>', {
                                 'data-id': playlist.id,
-                                href: '/course/' + playlist.id,
+                                href: '/course?id=' + playlist.id,
                                 text: playlist.title
                             })
                         )

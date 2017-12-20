@@ -44,10 +44,13 @@ var progress = function() {
 
 var trackList = function(audio) {
     const $trackList = $('#track-list');
+    const id = new URLSearchParams(window.location.search).get('id');
 
-    api.getPlaylist(157713757)
-        .then(data => {
-            data.tracks.forEach((track, index) => {
+    api.getPlaylist(id)
+        .then(playlist => {
+            courseName(playlist);
+
+            playlist.tracks.forEach((track, index) => {
                 $trackList.append(
                     $('<li/>')
                         .append(
@@ -121,6 +124,10 @@ var controls = function(audio) {
     $controlsToggle.on('click', function() {
         audio.toggle();
     });
+};
+
+var courseName = function(playlist) {
+    $('#course-name').text(playlist.title);
 };
 
 $(document).ready(() => {

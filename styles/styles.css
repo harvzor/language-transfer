@@ -33,8 +33,25 @@ p {
     top:0;
     left:0;
     width:100%;
-    padding:0 10px;
     z-index:2;
+}
+
+.home .navigation {
+    padding:10px;
+}
+
+.navigation-back {
+    float:left;
+    height:50px;
+    width:50px;
+    padding:10px;
+    margin-right:10px;
+    border-right:1px solid black;
+    font-size:32px;
+    text-decoration:none;
+    color:black;
+    text-align:center;
+    line-height:1em;
 }
 
 .navigation-settings {
@@ -103,7 +120,8 @@ p {
 }
 
 .tracks {
-    padding-bottom:270px;
+    padding-bottom:195px;
+    /*padding-bottom:270px;*/
 }
 
 .list {
