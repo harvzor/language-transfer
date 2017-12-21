@@ -1,12 +1,5 @@
 "use strict";
 
-/*
-var Track = function(track) {
-    this.id = track.id || null;
-    this.complete = track.complete || false;
-};
-*/
-
 var progress = function() {
     let tracks = storage.tracks.get() || [];
 
@@ -99,17 +92,21 @@ var controls = function(audio) {
     const $controlsForward = $('#controls-forward');
     const $controlsToggle = $('#controls-toggle');
 
-    audio.stateChangeFunctions.push((hasStarted, isPaused) => {
+    audio.stateChangeFunctions.push((hasStarted, isPaused, isLoading) => {
         if (!hasStarted) {
             $controlsToggle.text('Play')
-
-            return;
         }
 
-        if (isPaused) {
-            $controlsToggle.text('Resume')
-        } else {
+        if (hasStarted && !isPaused) {
             $controlsToggle.text('Pause')
+        }
+
+        if (isLoading) {
+            $controlsToggle.text('Loading...')
+        }
+
+        if (hasStarted && isPaused) {
+            $controlsToggle.text('Resume')
         }
     });
 
