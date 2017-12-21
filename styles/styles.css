@@ -144,6 +144,19 @@ p {
     margin:10px;
 }
 
+.list ul li.selected {
+    background-color:black;
+}
+
+.list ul li.selected a {
+    color:white;
+}
+
+.list ul li.selected a + a {
+    color:white;
+    border-color:white;
+}
+
 .list ul li a {
     display:block;
     padding:10px;

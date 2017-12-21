@@ -56,6 +56,9 @@ var trackList = function(audio) {
                                 let $this = $(this);
                                 let id = $this.data('id');
 
+                                $trackList.children().removeClass('selected');
+                                $this.parent().addClass('selected');
+
                                 e.preventDefault();
 
                                 audio.changeTrack(id);
