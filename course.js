@@ -35,6 +35,57 @@ var progress = function() {
     };
 }();
 
+const AudioElement = (props) => {
+    return (
+        <section className="bar audio">
+            <iframe width="100%" height="100%" scrolling="no" frameBorder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F&amp;show_teaser=false"></iframe>
+        </section>
+    )
+}
+
+const TrackList = (props) => {
+    return (
+        <ul>
+            {props.tracks.map((track, i) =>
+                <TrackItem track={track} id={i} key={i} />
+            )}
+        </ul>
+    )
+}
+
+class TrackItem extends React.Component {
+    state = {
+        isSelected: false,
+        isComplete: progress.getTrack(this.props.track.id) == null ? false : progress.getTrack(this.props.track.id).complete
+    }
+    handleClick = (event) => {
+        event.preventDefault()
+
+        audio.changeTrack(this.props.track.id)
+
+        this.setState(() => ({
+            isSelected: true
+        }))
+    }
+    completionHandleClick = (event) => {
+        event.preventDefault()
+
+        progress.toggleComplete(this.props.track.id)
+
+        this.setState(() => ({
+            isComplete: progress.getTrack(this.props.track.id).complete
+        }))
+    }
+    render() {
+        return (
+            <li className={{ "selected": this.state.isSelected }}>
+                <a href={this.props.track.id} data-id={this.props.track.id} onClick={this.handleClick}>{this.props.id + 1}</a>
+                <a href={this.props.track.id} data-id={this.props.track.id} onClick={this.completionHandleClick}>Mark {this.state.isComplete ? "uncomplete" : "complete"}</a>
+            </li>
+        )
+    }
+}
+
 var trackList = function(audio) {
     const $trackList = $('#track-list');
     const id = new URLSearchParams(window.location.search).get('id');
@@ -43,50 +94,7 @@ var trackList = function(audio) {
         .then(playlist => {
             courseName(playlist);
 
-            playlist.tracks.forEach((track, index) => {
-                $trackList.append(
-                    $('<li/>')
-                        .append(
-                            $('<a/>', {
-                                'data-id': track.id,
-                                href: track.id,
-                                text: 'Track ' + (index + 1)
-                            })
-                            .on('click', function(e) {
-                                let $this = $(this);
-                                let id = $this.data('id');
-
-                                $trackList.children().removeClass('selected');
-                                $this.parent().addClass('selected');
-
-                                e.preventDefault();
-
-                                audio.changeTrack(id);
-                            }),
-                            $('<a/>', {
-                                'data-id': track.id,
-                                href: track.id,
-                                text: progress.getTrack(track.id) != null && progress.getTrack(track.id).complete
-                                    ? 'Mark uncomplete'
-                                    : 'Mark complete'
-                            })
-                            .on('click', function(e) {
-                                let $this = $(this);
-                                let id = $this.data('id');
-
-                                e.preventDefault();
-
-                                progress.toggleComplete(id);
-
-                                if (progress.getTrack(track.id).complete) {
-                                    $this.text('Mark uncomplete');
-                                } else {
-                                    $this.text('Mark complete');
-                                }
-                            })
-                        )
-                );
-            });
+            ReactDOM.render(<TrackList tracks={playlist.tracks} />, $trackList[0])
         });
 };
 
@@ -130,9 +138,10 @@ var courseName = function(playlist) {
     $('#course-name').text(playlist.title);
 };
 
-$(document).ready(() => {
-    const audio = new Audio();
+ReactDOM.render(<AudioElement />, $('#audio-target')[0])
+const audio = new Audio();
 
+$(document).ready(() => {
     trackList(audio);
     controls(audio);
 });

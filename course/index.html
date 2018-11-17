@@ -24,24 +24,23 @@
                 Auto stop? (not functional)
             </label>
         </section>
-        <section class="list tracks">
-            <ul id="track-list"><!-- DYNAMICALLY FILLED --></ul>
-        </section>
+        <section class="list tracks" id="track-list"></section>
         <div class="ui-container">
             <!--
                 <section class="bar hint">
                     <p>Translate: "find them!" to German</p>
                 </section>
             -->
-            <section class="bar audio">
-                <iframe width="100%" height="100%" scrolling="no" frameborder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F&amp;show_teaser=false"></iframe>
-            </section>
+            <div id="audio-target"></div>
             <section class="bar controls">
                 <button class="controls-skip" id="controls-back">-5s</button>
                 <button id="controls-toggle">Play</button>
                 <button class="controls-skip" id="controls-forward">+5s</button>
             </section>
         </div>
+        <script src="/scripts/libs/babel.min.js"></script>
+        <script src="/scripts/libs/react.development.js"></script>
+        <script src="/scripts/libs/react-dom.development.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://w.soundcloud.com/player/api.js"></script>
         <script src="/scripts/libs/NoSleep.min.js"></script>
@@ -51,6 +50,6 @@
         <script src="/scripts/settings.js"></script>
         <script src="/scripts/settings-ui.js"></script>
         <script src="/scripts/storage.js"></script>
-        <script src="/course.js"></script>
+        <script type="text/babel" src="/course.js"></script>
     </body>
 </html>

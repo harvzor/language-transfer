@@ -5,6 +5,8 @@ var Audio = function () {
     const widget = SC.Widget(document.querySelector('iframe'));
     const url = 'https://api.soundcloud.com/tracks/{id}';
 
+    this.trackId = null;
+
     /**
      * Run the state change functions.
      * @private
@@ -80,12 +82,14 @@ var Audio = function () {
         widget.toggle();
     };
 
-    /**j
+    /**
      * Change to a given track.
      * @param {number} id Id of the track to change to.
      */
     this.changeTrack = id => {
-        let newUrl = url.replace('{id}', id);
+        this.trackId = id;
+
+        let newUrl = url.replace('{id}', this.trackId);
 
         widget.load(newUrl, {
             auto_play: false,
