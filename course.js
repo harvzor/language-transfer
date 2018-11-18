@@ -121,19 +121,29 @@ class Controls extends React.Component {
     }
 }
 
-const TrackList = (props) => {
-    return (
-        <ul>
-            {props.tracks.map((track, i) =>
-                <TrackItem track={track} id={i} key={i} />
-            )}
-        </ul>
-    )
+class TrackList extends React.Component {
+    state = {
+        // The index of the selected track.
+        selected: null
+    }
+    handleTrackClick = (i) => {
+        this.setState(() => ({
+            selected: i
+        }))
+    }
+    render() {
+        return (
+            <ul>
+                {this.props.tracks.map((track, i) =>
+                    <TrackItem selected={i === this.state.selected} onClickEvent={this.handleTrackClick} track={track} id={i} key={i} />
+                )}
+            </ul>
+        )
+    }
 }
 
 class TrackItem extends React.Component {
     state = {
-        isSelected: false,
         isComplete: progress.getTrack(this.props.track.id) == null ? false : progress.getTrack(this.props.track.id).complete
     }
     handleClick = (event) => {
@@ -141,9 +151,7 @@ class TrackItem extends React.Component {
 
         AudioUi.audio.changeTrack(this.props.track.id)
 
-        this.setState(() => ({
-            isSelected: true
-        }))
+        this.props.onClickEvent(this.props.id)
     }
     completionHandleClick = (event) => {
         event.preventDefault()
@@ -156,7 +164,7 @@ class TrackItem extends React.Component {
     }
     render() {
         return (
-            <li className={{ "selected": this.state.isSelected }}>
+            <li className={this.props.selected ? "selected" : ""}>
                 <a href={this.props.track.id} data-id={this.props.track.id} onClick={this.handleClick}>{this.props.id + 1}</a>
                 <a href={this.props.track.id} data-id={this.props.track.id} onClick={this.completionHandleClick}>Mark {this.state.isComplete ? "uncomplete" : "complete"}</a>
             </li>
@@ -165,13 +173,31 @@ class TrackItem extends React.Component {
 }
 
 class App extends React.Component {
+    state = {
+        playListLoaded: false,
+        playlist: {
+            title: '',
+            tracks: []
+        }
+    }
+    componentDidMount = () => {
+        const id = new URLSearchParams(window.location.search).get('id');
+
+        api.getPlaylist(id)
+            .then(playlist => {
+                this.setState(() => ({
+                    playListLoaded: true,
+                    playlist: playlist
+                }))
+            });
+    }
     render() {
         return (
             <div>
                 <section className="bar bar--thin navigation">
                     <a href="/" className="navigation-back">&lt;</a>
                     <h1>Language Transfer</h1>
-                    <h2 id="course-name"></h2>
+                    <h2>{this.state.playlist.title}</h2>
                     <a href="#settings" className="navigation-settings"></a>
                 </section>
                 <section className="settings-page hidden">
@@ -185,13 +211,10 @@ class App extends React.Component {
                         Auto stop? (not functional)
                     </label>
                 </section>
-                <section className="list tracks" id="track-list"></section>
-                <div className="ui-container">
-                    /*
-                        <section className="bar hint">
-                            <p>Translate: "find them!" to German</p>
-                        </section>
-                    */
+                <section className="list tracks">
+                    <TrackList tracks={this.state.playlist.tracks} />
+                </section>
+                <div className={"ui-container" + (this.state.playListLoaded ? "" : " hidden")}>
                     <AudioUi />
                 </div>
             </div>
@@ -199,24 +222,4 @@ class App extends React.Component {
     }
 }
 
-var trackList = function() {
-    const $trackList = $('#track-list');
-    const id = new URLSearchParams(window.location.search).get('id');
-
-    api.getPlaylist(id)
-        .then(playlist => {
-            courseName(playlist);
-
-            ReactDOM.render(<TrackList tracks={playlist.tracks} />, $trackList[0])
-        });
-};
-
-var courseName = function(playlist) {
-    $('#course-name').text(playlist.title);
-};
-
 ReactDOM.render(<App />, $('#app')[0])
-
-$(document).ready(() => {
-    trackList();
-});
