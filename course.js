@@ -1,5 +1,8 @@
 "use strict";
 
+/**
+ * Handles the user's progress in the browser local storage.
+ */
 var progress = function() {
     let tracks = storage.tracks.get() || [];
 
@@ -35,12 +38,87 @@ var progress = function() {
     };
 }();
 
-const AudioElement = (props) => {
-    return (
-        <section className="bar audio">
-            <iframe width="100%" height="100%" scrolling="no" frameBorder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F&amp;show_teaser=false"></iframe>
-        </section>
-    )
+
+class AudioUi extends React.Component {
+    audio = null
+    render() {
+        return (
+            <div>
+                <AudioElement />
+                <Controls />
+            </div>
+        )
+    }
+}
+
+class AudioElement extends React.Component {
+    componentDidMount = () => {
+        AudioUi.audio = new Audio()
+    }
+    render() {
+        return (
+            <section className="bar audio">
+                <iframe width="100%" height="100%" scrolling="no" frameBorder="no" src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F&amp;show_teaser=false"></iframe>
+            </section>
+        )
+    }
+}
+
+class Controls extends React.Component {
+    state = {
+        toggleText: 'Play'
+    }
+    handleBackClick = (event) => {
+        event.preventDefault();
+
+        AudioUi.audio.addSeconds(-5);
+    }
+    handleToggleClick = (event) => {
+        event.preventDefault();
+
+        AudioUi.audio.toggle();
+    }
+    handleForwardClick = (event) => {
+        event.preventDefault();
+
+        AudioUi.audio.addSeconds(5);
+    }
+    componentDidMount = () => {
+        AudioUi.audio.stateChangeFunctions.push((hasStarted, isPaused, isLoading) => {
+            if (!hasStarted) {
+                this.setState(() => ({
+                    toggleText: 'Play'
+                }))
+            }
+
+            if (hasStarted && !isPaused) {
+                this.setState(() => ({
+                    toggleText: 'Pause'
+                }))
+            }
+
+            if (isLoading) {
+                this.setState(() => ({
+                    toggleText: 'Loading...'
+                }))
+            }
+
+            if (hasStarted && isPaused) {
+                this.setState(() => ({
+                    toggleText: 'Resume'
+                }))
+            }
+        })
+    }
+    render() {
+        return (
+            <section className="bar controls">
+                <button className="controls-skip" onClick={this.handleBackClick}>-5s</button>
+                <button onClick={this.handleToggleClick}>{this.state.toggleText}</button>
+                <button className="controls-skip" onClick={this.handleForwardClick}>+5s</button>
+            </section>
+        )
+    }
 }
 
 const TrackList = (props) => {
@@ -61,7 +139,7 @@ class TrackItem extends React.Component {
     handleClick = (event) => {
         event.preventDefault()
 
-        audio.changeTrack(this.props.track.id)
+        AudioUi.audio.changeTrack(this.props.track.id)
 
         this.setState(() => ({
             isSelected: true
@@ -86,7 +164,42 @@ class TrackItem extends React.Component {
     }
 }
 
-var trackList = function(audio) {
+class App extends React.Component {
+    render() {
+        return (
+            <div>
+                <section className="bar bar--thin navigation">
+                    <a href="/" className="navigation-back">&lt;</a>
+                    <h1>Language Transfer</h1>
+                    <h2 id="course-name"></h2>
+                    <a href="#settings" className="navigation-settings"></a>
+                </section>
+                <section className="settings-page hidden">
+                    <h3>Settings</h3>
+                    <label>
+                        <input type="checkbox" name="keepAwake" />
+                        Keep awake? (experimental, won't be remembered)
+                    </label>
+                    <label>
+                        <input type="checkbox" name="autoStop" />
+                        Auto stop? (not functional)
+                    </label>
+                </section>
+                <section className="list tracks" id="track-list"></section>
+                <div className="ui-container">
+                    /*
+                        <section className="bar hint">
+                            <p>Translate: "find them!" to German</p>
+                        </section>
+                    */
+                    <AudioUi />
+                </div>
+            </div>
+        )
+    }
+}
+
+var trackList = function() {
     const $trackList = $('#track-list');
     const id = new URLSearchParams(window.location.search).get('id');
 
@@ -98,50 +211,12 @@ var trackList = function(audio) {
         });
 };
 
-var controls = function(audio) {
-    const $controlsBack = $('#controls-back');
-    const $controlsForward = $('#controls-forward');
-    const $controlsToggle = $('#controls-toggle');
-
-    audio.stateChangeFunctions.push((hasStarted, isPaused, isLoading) => {
-        if (!hasStarted) {
-            $controlsToggle.text('Play')
-        }
-
-        if (hasStarted && !isPaused) {
-            $controlsToggle.text('Pause')
-        }
-
-        if (isLoading) {
-            $controlsToggle.text('Loading...')
-        }
-
-        if (hasStarted && isPaused) {
-            $controlsToggle.text('Resume')
-        }
-    });
-
-    $controlsBack.on('click', function() {
-        audio.addSeconds(-5);
-    });
-
-    $controlsForward.on('click', function() {
-        audio.addSeconds(5);
-    });
-
-    $controlsToggle.on('click', function() {
-        audio.toggle();
-    });
-};
-
 var courseName = function(playlist) {
     $('#course-name').text(playlist.title);
 };
 
-ReactDOM.render(<AudioElement />, $('#audio-target')[0])
-const audio = new Audio();
+ReactDOM.render(<App />, $('#app')[0])
 
 $(document).ready(() => {
-    trackList(audio);
-    controls(audio);
+    trackList();
 });

@@ -7,37 +7,7 @@
         <link href="/styles/styles.css" type="text/css" rel="stylesheet">
     </head>
     <body>
-        <section class="bar bar--thin navigation">
-            <a href="/" class="navigation-back"><</a>
-            <h1>Language Transfer</h1>
-            <h2 id="course-name"><!-- DYNAMICALLY FILLED --></h2>
-            <a href="#settings" class="navigation-settings"></a>
-        </section>
-        <section class="settings-page hidden">
-            <h3>Settings</h3>
-            <label>
-                <input type="checkbox" name="keepAwake">
-                Keep awake? (experimental, won't be remembered)
-            </label>
-            <label>
-                <input type="checkbox" name="autoStop">
-                Auto stop? (not functional)
-            </label>
-        </section>
-        <section class="list tracks" id="track-list"></section>
-        <div class="ui-container">
-            <!--
-                <section class="bar hint">
-                    <p>Translate: "find them!" to German</p>
-                </section>
-            -->
-            <div id="audio-target"></div>
-            <section class="bar controls">
-                <button class="controls-skip" id="controls-back">-5s</button>
-                <button id="controls-toggle">Play</button>
-                <button class="controls-skip" id="controls-forward">+5s</button>
-            </section>
-        </div>
+        <div id="app"></div>
         <script src="/scripts/libs/babel.min.js"></script>
         <script src="/scripts/libs/react.development.js"></script>
         <script src="/scripts/libs/react-dom.development.js"></script>
