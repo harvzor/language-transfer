@@ -6,15 +6,14 @@ var api = function() {
      */
     var get = (item, data) => {
         return new Promise((resolve, reject) => {
-            $.ajax({
-                url: baseUrl + item + '.json'
-            })
-            .done((returnData) => {
-                resolve(returnData);
-            })
-            .fail(() => {
-                reject();
-            });
+            fetch(baseUrl + item + '.json')
+                .then(resp => resp.json())
+                .then(data => {
+                    resolve(data)
+                })
+                .catch(() => {
+                    reject();
+                })
         });
     };
 

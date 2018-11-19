@@ -10,16 +10,28 @@ var api = function() {
         data.client_id = settings().clientId;
 
         return new Promise((resolve, reject) => {
-            $.ajax({
-                url: baseUrl + item,
-                data: data
+            fetch(baseUrl + item, {
+                body: data
             })
-            .done((returnData) => {
+            .then(returnData => {
                 resolve(returnData);
             })
-            .fail(() => {
+            .catch(() => {
                 reject();
-            });
+            })
+
+            /*
+                $.ajax({
+                    url: baseUrl + item,
+                    data: data
+                })
+                .done((returnData) => {
+                    resolve(returnData);
+                })
+                .fail(() => {
+                    reject();
+                });
+            */
         });
     };
 
