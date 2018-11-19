@@ -130,12 +130,14 @@ class TrackList extends React.Component {
         this.setState(() => ({
             selected: i
         }))
+
+        this.props.trackSelected()
     }
     render() {
         return (
             <ul>
                 {this.props.tracks.map((track, i) =>
-                    <TrackItem selected={i === this.state.selected} onClickEvent={this.handleTrackClick} track={track} id={i} key={i} />
+                    <TrackItem selected={i === this.state.selected} trackSelected={this.handleTrackClick} track={track} id={i} key={i} />
                 )}
             </ul>
         )
@@ -151,7 +153,7 @@ class TrackItem extends React.Component {
 
         AudioUi.audio.changeTrack(this.props.track.id)
 
-        this.props.onClickEvent(this.props.id)
+        this.props.trackSelected(this.props.id)
     }
     completionHandleClick = (event) => {
         event.preventDefault()
@@ -165,7 +167,7 @@ class TrackItem extends React.Component {
     render() {
         return (
             <li className={this.props.selected ? "selected" : ""}>
-                <a href={this.props.track.id} data-id={this.props.track.id} onClick={this.handleClick}>{this.props.id + 1}</a>
+                <a href={this.props.track.id} data-id={this.props.track.id} onClick={this.handleClick}>Track {this.props.id + 1}</a>
                 <a href={this.props.track.id} data-id={this.props.track.id} onClick={this.completionHandleClick}>Mark {this.state.isComplete ? "uncomplete" : "complete"}</a>
             </li>
         )
@@ -174,7 +176,7 @@ class TrackItem extends React.Component {
 
 class App extends React.Component {
     state = {
-        playListLoaded: false,
+        trackSelected: false,
         playlist: {
             title: '',
             tracks: []
@@ -186,10 +188,21 @@ class App extends React.Component {
         api.getPlaylist(id)
             .then(playlist => {
                 this.setState(() => ({
-                    playListLoaded: true,
                     playlist: playlist
                 }))
             });
+    }
+    toggleSettingsVisible = (event) => {
+        event.preventDefault()
+
+        this.setState((prevState) => ({
+            settingsVisible: !prevState.settingsVisible
+        }))
+    }
+    trackSelectedEvent = () => {
+        this.setState(() => ({
+            trackSelected: true
+        }))
     }
     render() {
         return (
@@ -198,23 +211,14 @@ class App extends React.Component {
                     <a href="/" className="navigation-back">&lt;</a>
                     <h1>Language Transfer</h1>
                     <h2>{this.state.playlist.title}</h2>
-                    <a href="#settings" className="navigation-settings"></a>
+                    <a href="#settings" className="navigation-settings" onClick={this.toggleSettingsVisible}></a>
                 </section>
-                <section className="settings-page hidden">
-                    <h3>Settings</h3>
-                    <label>
-                        <input type="checkbox" name="keepAwake" />
-                        Keep awake? (experimental, won't be remembered)
-                    </label>
-                    <label>
-                        <input type="checkbox" name="autoStop" />
-                        Auto stop? (not functional)
-                    </label>
-                </section>
+                <Settings visible={this.state.settingsVisible} />
                 <section className="list tracks">
-                    <TrackList tracks={this.state.playlist.tracks} />
+                    <p>Select a track to be played.</p>
+                    <TrackList tracks={this.state.playlist.tracks} trackSelected={this.trackSelectedEvent} />
                 </section>
-                <div className={"ui-container" + (this.state.playListLoaded ? "" : " hidden")}>
+                <div className={"ui-container" + (this.state.trackSelected ? "" : " hidden")}>
                     <AudioUi />
                 </div>
             </div>

@@ -7,22 +7,7 @@
         <link href="/styles/styles.css" type="text/css" rel="stylesheet">
     </head>
     <body class="home">
-        <section class="bar bar--thin navigation">
-            <h1>Language Transfer</h1>
-            <a href="#settings" class="navigation-settings"></a>
-        </section>
-        <section class="settings-page hidden">
-            <h3>Settings</h3>
-            <label>
-                <input type="checkbox" name="keepAwake">
-                Keep awake? (experimental, won't be remembered)
-            </label>
-            <label>
-                <input type="checkbox" name="autoStop">
-                Auto stop? (not functional)
-            </label>
-        </section>
-        <section class="list" id="course-list"></section>
+        <div id="app"></div>
         <script src="/scripts/libs/babel.min.js"></script>
         <script src="/scripts/libs/react.development.js"></script>
         <script src="/scripts/libs/react-dom.development.js"></script>
@@ -32,7 +17,7 @@
         <script src="/scripts/api.js"></script>
         <script src="/scripts/storage.js"></script>
         <script src="/scripts/settings.js"></script>
-        <script src="/scripts/settings-ui.js"></script>
+        <script type="text/babel" src="/settings.js"></script>
         <script type="text/babel" src="/index.js"></script>
     </body>
 </html>

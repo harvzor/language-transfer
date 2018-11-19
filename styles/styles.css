@@ -58,9 +58,9 @@ p {
     position:absolute;
     right:0;
     top:0;
-    margin:5px;
-    height:40px;
-    width:40px;
+    margin:10px;
+    height:30px;
+    width:30px;
     background-image:url('/images/cog.svg');
     background-size:cover;
 }
@@ -128,7 +128,7 @@ p {
     position:absolute;
     width:100%;
     margin-top:50px;
-    overflow:scroll;
+    padding:10px;
     z-index:-1;
 }
 
@@ -141,7 +141,11 @@ p {
 .list ul li {
     position:relative;
     border:1px solid black;
-    margin:10px;
+    margin:10px 0;
+}
+
+.list ul li:last-child {
+    margin-bottom:0;
 }
 
 .list ul li.selected {

@@ -24,9 +24,6 @@ var storage = function() {
         };
 
         let set = (data) => {
-            // Keep awake won't run unless on a click event, so saving it is pointless.
-            data.keepAwake = false;
-
             localStorage.setItem(key, JSON.stringify(data));
         };
 

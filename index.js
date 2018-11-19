@@ -18,15 +18,43 @@ const CourseItem = (props) => {
     )
 }
 
-var courseList = function() {
-    const $courseList = $('#course-list');
+class App extends React.Component {
+    state = {
+        settingsVisible: false,
+        playlists: {
+            collection: []
+        }
+    }
+    componentDidMount = () => {
+        api.getPlaylists()
+            .then(playlists => {
+                this.setState(() => ({
+                    playlists: playlists
+                }))
+            })
+    }
+    toggleSettingsVisible = (event) => {
+        event.preventDefault()
 
-    api.getPlaylists()
-        .then(playlists => {
-            ReactDOM.render(<CourseList playlists={playlists.collection} />, $courseList[0])
-        })
-};
+        this.setState((prevState) => ({
+            settingsVisible: !prevState.settingsVisible
+        }))
+    }
+    render() {
+        return (
+            <div>
+                <section className="bar bar--thin navigation">
+                    <h1>Language Transfer</h1>
+                    <a href="#settings" className="navigation-settings" onClick={this.toggleSettingsVisible}></a>
+                </section>
+                <Settings visible={this.state.settingsVisible} />
+                <section className="list" id="course-list">
+                    <p>Select a course you want to start.</p>
+                    <CourseList playlists={this.state.playlists.collection} />
+                </section>
+            </div>
+        )
+    }
+}
 
-$(document).ready(() => {
-    courseList();
-});
+ReactDOM.render(<App />, $('#app')[0])
