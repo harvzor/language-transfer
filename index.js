@@ -33,6 +33,11 @@ class App extends React.Component {
                 }))
             })
     }
+    toggleFullscreen = (event) => {
+        event.preventDefault()
+
+        document.getElementById('app').requestFullscreen();
+    }
     toggleSettingsVisible = (event) => {
         event.preventDefault()
 
@@ -45,6 +50,7 @@ class App extends React.Component {
             <div>
                 <section className="bar bar--thin navigation">
                     <h1>Language Transfer</h1>
+                    <a href="#fullscreen" className="navigation-settings fullscreen" onClick={this.toggleFullscreen}></a>
                     <a href="#settings" className="navigation-settings" onClick={this.toggleSettingsVisible}></a>
                 </section>
                 <Settings visible={this.state.settingsVisible} />

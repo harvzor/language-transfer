@@ -28,6 +28,11 @@ p {
     display:none;
 }
 
+#app {
+    /* Necessary because fullscreen for some reason changes the background color to black?? */
+    background-color:white;
+}
+
 .navigation {
     position:fixed;
     top:0;
@@ -63,6 +68,10 @@ p {
     width:30px;
     background-image:url('/images/cog.svg');
     background-size:cover;
+}
+
+.fullscreen {
+    right:40px;
 }
 
 .settings-page {
