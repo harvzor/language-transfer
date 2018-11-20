@@ -74,6 +74,14 @@ p {
     right:40px;
 }
 
+.fullscreen--enter {
+    background-image:url('/images/fullscreen-enter.svg');
+}
+
+.fullscreen--exit {
+    background-image:url('/images/fullscreen-exit.svg');
+}
+
 .settings-page {
     position:fixed;
     height:100%;
@@ -128,17 +136,17 @@ p {
     width:20%;
 }
 
-.tracks {
-    padding-bottom:195px;
-    /*padding-bottom:270px;*/
-}
-
 .list {
     position:absolute;
     width:100%;
     margin-top:50px;
     padding:10px;
     z-index:-1;
+}
+
+.tracks {
+    padding-bottom:215px;
+    /*padding-bottom:270px;*/
 }
 
 .list ul {
