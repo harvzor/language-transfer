@@ -77,6 +77,9 @@ class Controls extends React.Component {
         event.preventDefault();
 
         AudioUi.audio.toggle();
+
+        if (storage.settings.get() !== null && storage.settings.get().vibrate)
+            window.navigator.vibrate(200);
     }
     handleForwardClick = (event) => {
         event.preventDefault();

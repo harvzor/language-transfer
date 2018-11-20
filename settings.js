@@ -1,7 +1,7 @@
 class Settings extends React.Component {
     state = {
         settings: storage.settings.get() || {
-            autoStop: false
+            vibrate: false
         }
     }
     noSleep = new NoSleep()
@@ -17,11 +17,11 @@ class Settings extends React.Component {
             this.noSleep.disable()
         }
     }
-    autoStopChange = (event) => {
+    vibrateChange = (event) => {
         let checked = event.target.checked
 
         this.setState(prevState => {
-            prevState.settings.autoStop = checked
+            prevState.settings.vibrate = checked
 
             this.save(prevState.settings)
 
@@ -37,8 +37,8 @@ class Settings extends React.Component {
                     Keep awake? (experimental, won't be remembered)
                 </label>
                 <label>
-                    <input type="checkbox" defaultChecked={this.state.settings.autoStop} onChange={this.autoStopChange} />
-                    Auto stop? (not functional)
+                    <input type="checkbox" defaultChecked={this.state.settings.vibrate} onChange={this.vibrateChange} />
+                    Vibrate? (only works on some mobile browsers)
                 </label>
             </section>
         )
