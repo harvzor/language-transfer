@@ -38,3 +38,5 @@ var storage = function() {
         settings: settings
     };
 }();
+
+export default storage

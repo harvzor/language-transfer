@@ -68,6 +68,7 @@ p {
     width:30px;
     background-image:url('/images/cog.svg');
     background-size:cover;
+    font-size:0;
 }
 
 .fullscreen {

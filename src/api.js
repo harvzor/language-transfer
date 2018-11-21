@@ -1,5 +1,7 @@
+import settings from './settings'
+
 var api = function() {
-    const baseUrl = '/json/';
+    const baseUrl = '/json/'
 
     /**
      * @private
@@ -12,26 +14,28 @@ var api = function() {
                     resolve(data)
                 })
                 .catch(() => {
-                    reject();
+                    reject()
                 })
         });
     };
 
     var getUser = () => {
-        return get('users/' + settings().userId);
-    };
+        return get('users/' + settings().userId)
+    }
 
     var getPlaylists = () => {
-        return get('users/' + settings().userId + '/playlists');
-    };
+        return get('users/' + settings().userId + '/playlists')
+    }
 
     var getPlaylist = (id) => {
-        return get('playlists/' + id);
-    };
+        return get('playlists/' + id)
+    }
 
     return {
         getUser: getUser,
         getPlaylists: getPlaylists,
         getPlaylist: getPlaylist
-    };
-}();
+    }
+}()
+
+export default api

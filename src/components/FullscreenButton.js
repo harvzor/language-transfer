@@ -1,4 +1,7 @@
-class FullscreenButton extends React.Component {
+import React, { Component } from 'react';
+import screenfull from 'screenfull'
+
+class FullscreenButton extends Component {
     state = {
         isFullscreen: false
     }
@@ -23,10 +26,12 @@ class FullscreenButton extends React.Component {
     render() {
         if (screenfull.enabled) {
             return (
-                <a href="#fullscreen" className={this.classString()} onClick={this.toggleFullscreen}></a>
+                <a href="#fullscreen" className={this.classString()} onClick={this.toggleFullscreen}>toggle fullscreen</a>
             )
         }
 
         return null
     }
 }
+
+export default FullscreenButton

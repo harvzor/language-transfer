@@ -1,24 +1,11 @@
-"use strict";
+import React, { Component } from 'react'
+import './App.css'
+import CourseList from './components/CourseList'
+import FullscreenButton from './components/FullscreenButton'
+import Settings from './components/Settings'
+import api from './api'
 
-const CourseList = (props) => {
-    return (
-        <ul>
-            {props.playlists.map((playlist, i) =>
-                <CourseItem playlist={playlist} key={i} />
-            )}
-        </ul>
-    )
-}
-
-const CourseItem = (props) => {
-    return (
-        <li>
-            <a href={"/course?id=" + props.playlist.id}>{props.playlist.title}</a>
-        </li>
-    )
-}
-
-class App extends React.Component {
+class App extends Component {
     state = {
         settingsVisible: false,
         playlists: {
@@ -46,7 +33,7 @@ class App extends React.Component {
                 <section className="bar bar--thin navigation">
                     <h1>Language Transfer</h1>
                     <FullscreenButton />
-                    <a href="#settings" className="navigation-settings" onClick={this.toggleSettingsVisible}></a>
+                    <a href="#settings" className="navigation-settings" onClick={this.toggleSettingsVisible}>open settings</a>
                 </section>
                 <Settings visible={this.state.settingsVisible} />
                 <section className="list">
@@ -58,4 +45,4 @@ class App extends React.Component {
     }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'))
+export default App

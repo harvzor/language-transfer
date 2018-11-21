@@ -1,15 +1,23 @@
-class Settings extends React.Component {
+import React, { Component } from 'react'
+import storage from '../storage'
+import NoSleep from 'nosleep'
+
+class Settings extends Component {
     state = {
         settings: storage.settings.get() || {
             vibrate: false
         }
     }
-    noSleep = new NoSleep()
+    noSleep = null
     save = (settings) => {
         storage.settings.set(settings);
     }
     keepAwakeChange = (event) => {
         let checked = event.target.checked
+
+        if (this.noSleep === null) {
+            this.noSleep = new NoSleep()
+        }
 
         if (checked) {
             this.noSleep.enable()
@@ -44,3 +52,5 @@ class Settings extends React.Component {
         )
     }
 }
+
+export default Settings
