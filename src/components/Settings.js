@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import storage from '../storage'
-import NoSleep from 'nosleep'
+import NoSleep from 'nosleep.js'
 
 class Settings extends Component {
     state = {

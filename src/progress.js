@@ -15,7 +15,7 @@ var progress = function() {
     };
 
     let getTrack = (id) => {
-        return tracks.find(track => track.id == id) || null;
+        return tracks.find(track => track.id === id) || null;
     };
 
     let toggleComplete = (id) => {

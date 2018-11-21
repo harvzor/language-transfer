@@ -1,9 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const CourseItem = (props) => {
     return (
         <li>
-            <a href={"/course?id=" + props.playlist.id}>{props.playlist.title}</a>
+            <Link to={'/course/' + props.playlist.id}>
+                {props.playlist.title}
+            </Link>
         </li>
     )
 }
