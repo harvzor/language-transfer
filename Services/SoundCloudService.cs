@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -11,7 +8,7 @@ namespace language_transfer.Services
         private const string ClientId = "l8WSPv4CxauOFLU9Rum53U1ZCP0k1D2C";
         private const string AppVersion = "1542807955";
 
-        public async Task<dynamic> GetPlaylists()
+        public async Task<object> GetPlaylists()
         {
             var url = $"https://api-v2.soundcloud.com/users/81304541/playlists?client_id={ClientId}&limit=100&app_version={AppVersion}&app_locale=en";
 
@@ -23,7 +20,7 @@ namespace language_transfer.Services
             }
         }
 
-        public async Task<dynamic> GetPlaylist(int id)
+        public async Task<object> GetPlaylist(int id)
         {
             var url = $"https://api.soundcloud.com/playlists/{id}?client_id={ClientId}";
 

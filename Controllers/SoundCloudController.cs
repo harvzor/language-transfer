@@ -1,5 +1,7 @@
 using language_transfer.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,16 +14,48 @@ namespace language_transfer.Controllers
     {
         private SoundCloudService SoundCloudService = new SoundCloudService();
 
-        [HttpGet("Playlists")]
-        public async Task<ActionResult<dynamic>> Playlists()
+        private readonly IMemoryCache _cache;
+        private const string CacheKey = "soundcloud";
+
+        public SoundCloudController(IMemoryCache memoryCache)
         {
-            return await SoundCloudService.GetPlaylists();
+            _cache = memoryCache;
+        }
+
+        [HttpGet("Playlists")]
+        [ResponseCache(Duration = 300)]
+        public async Task<ActionResult<object>> Playlists()
+        {
+            var key = CacheKey + "/playlists";
+
+            if (_cache.TryGetValue(key, out dynamic result))
+            {
+                return result;
+            }
+
+            var playlists = await SoundCloudService.GetPlaylists();
+
+            _cache.Set(key, playlists, TimeSpan.FromDays(1));
+
+            return playlists;
         }
 
         [HttpGet("Playlist/{id}")]
+        [ResponseCache(Duration = 300)]
         public async Task<ActionResult<dynamic>> Playlist(int id)
         {
-            return await SoundCloudService.GetPlaylist(id);
+            var key = CacheKey + "/playlist/" + id;
+
+            if (_cache.TryGetValue(key, out dynamic result))
+            {
+                return result;
+            }
+
+            var playlist = await SoundCloudService.GetPlaylist(id);
+
+            _cache.Set(key, playlist, TimeSpan.FromDays(1));
+
+            return playlist;
         }
     }
 }

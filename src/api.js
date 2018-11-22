@@ -1,14 +1,12 @@
-import settings from './settings'
-
 var api = function() {
-    const baseUrl = '/json/'
+    const baseUrl = '/api/soundcloud/'
 
     /**
      * @private
      */
     var get = (item, data) => {
         return new Promise((resolve, reject) => {
-            fetch(baseUrl + item + '.json')
+            fetch(baseUrl + item)
                 .then(resp => resp.json())
                 .then(data => {
                     resolve(data)
@@ -19,20 +17,15 @@ var api = function() {
         });
     };
 
-    var getUser = () => {
-        return get('users/' + settings().userId)
-    }
-
     var getPlaylists = () => {
-        return get('users/' + settings().userId + '/playlists')
+        return get('playlists')
     }
 
     var getPlaylist = (id) => {
-        return get('playlists/' + id)
+        return get('playlist/' + id)
     }
 
     return {
-        getUser: getUser,
         getPlaylists: getPlaylists,
         getPlaylist: getPlaylist
     }
