@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
-using System;
 
 namespace language_transfer
 {
@@ -46,14 +45,14 @@ namespace language_transfer
             app.UseDefaultFiles(new DefaultFilesOptions()
             {
                 DefaultFileNames = new List<string>() { "index.html" },
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"build")),
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),
                 RequestPath = new PathString("")
             });
 
             // and all the rest of my static files live in Assets too
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"build")),
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),
                 RequestPath = new PathString("")
             });
 
