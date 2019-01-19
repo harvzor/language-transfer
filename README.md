@@ -2,6 +2,12 @@
 
 Proof of concept (prototype) of Language Transfer web app.
 
+## Getting started
+
+This is a Dot Net Core app with a React frontend.
+
+Run the Dot Net app by typing `dotnet run`.
+
 ## MIT Licensed
 
 Copyright 2018 Harvey Williams

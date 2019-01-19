@@ -1,29 +1,34 @@
-﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Rewrite;
-using Microsoft.Extensions.FileProviders;
-using System.IO;
 
 namespace language_transfer
 {
     public class Startup
     {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
         // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            /*
-                services.AddSpaStaticFiles(configuration => {
-                    configuration.RootPath = "build";
-                });
-            */
-
-            services.AddMvc();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddResponseCaching();
             services.AddMemoryCache();
+
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/build";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,44 +38,32 @@ namespace language_transfer
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseMvc();
-
-            app.UseRewriter(
-                new RewriteOptions()
-                    .AddRewrite(@"^((?!\.).)*$", "index.html", skipRemainingRules: true)
-            );
-
-            // index.html is the default if a file isn't asked for
-            app.UseDefaultFiles(new DefaultFilesOptions()
+            else
             {
-                DefaultFileNames = new List<string>() { "index.html" },
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),
-                RequestPath = new PathString("")
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action=Index}/{id?}");
             });
 
-            // and all the rest of my static files live in Assets too
-            app.UseStaticFiles(new StaticFileOptions()
+            app.UseSpa(spa =>
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"wwwroot")),
-                RequestPath = new PathString("")
-            });
+                spa.Options.SourcePath = "ClientApp";
 
-            /*
-                app.UseStaticFiles(new StaticFileOptions
+                if (env.IsDevelopment())
                 {
-                    OnPrepareResponse = (context) =>
-                    {
-                        var headers = context.Context.Response.GetTypedHeaders();
-
-                        headers.CacheControl = new CacheControlHeaderValue
-                        {
-                            Public = true,
-                            MaxAge = TimeSpan.FromDays(365)
-                        };
-                    }
-                });
-            */
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
         }
     }
 }
