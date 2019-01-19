@@ -1,4 +1,4 @@
-import storage from './storage'
+import storage from './StorageService'
 import Track from '../models/TrackModel'
 
 /**
