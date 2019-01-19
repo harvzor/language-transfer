@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import AudioUi from './AudioUi'
-import storage from '../storage'
+import storage from '../services/StorageService'
 
 class Controls extends Component {
     state = {

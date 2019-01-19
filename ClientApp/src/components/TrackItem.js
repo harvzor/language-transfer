@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import AudioUi from './AudioUi'
-import progress from '../progress'
+import progress from '../services/ProgressService'
 
 class TrackItem extends Component {
     state = {

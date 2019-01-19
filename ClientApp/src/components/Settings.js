@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import storage from '../storage'
+import storage from '../services/StorageService'
 import NoSleep from 'nosleep.js'
 
 class Settings extends Component {

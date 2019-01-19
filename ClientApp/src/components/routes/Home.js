@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import CourseList from '../CourseList'
-import api from '../../api'
+import api from '../../services/ApiService'
 
 class Home extends Component {
     state = {

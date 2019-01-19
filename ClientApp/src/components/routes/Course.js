@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import TrackList from '../TrackList'
 import AudioUi from '../AudioUi'
-import api from '../../api'
+import api from '../../services/ApiService'
 
 class Course extends Component {
     state = {

@@ -1,5 +1,5 @@
 import storage from './storage'
-import Track from './Track'
+import Track from '../models/TrackModel'
 
 /**
  * Handles the user's progress in the browser local storage.
