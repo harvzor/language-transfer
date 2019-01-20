@@ -1,3 +1,4 @@
+using language_transfer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -23,6 +24,9 @@ namespace language_transfer
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddResponseCaching();
             services.AddMemoryCache();
+
+            //services.AddScoped<IAudioService, SoundCloudService>();
+            services.AddSingleton<IAudioService, LocalAudioService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

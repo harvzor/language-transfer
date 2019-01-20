@@ -6,19 +6,19 @@ import api from '../../services/ApiService'
 class Course extends Component {
     state = {
         trackSelected: false,
-        playlist: {
-            tracks: []
+        course: {
+            lessons: []
         }
     }
     componentDidMount = () => {
         const id = this.props.match.params.playlistId
 
         api.getPlaylist(id)
-            .then(playlist => {
-                this.props.updateTitle(playlist.title)
+            .then(course => {
+                this.props.updateTitle(course.title)
 
                 this.setState(() => ({
-                    playlist: playlist
+                    course: course
                 }))
             });
     }
@@ -32,7 +32,7 @@ class Course extends Component {
             <div>
                 <section className="list tracks">
                     <p>Select a track to be played.</p>
-                    <TrackList tracks={this.state.playlist.tracks} trackSelected={this.trackSelectedEvent} />
+                    <TrackList lessons={this.state.course.lessons} trackSelected={this.trackSelectedEvent} />
                 </section>
                 <div className={"ui-container" + (this.state.trackSelected ? "" : " hidden")}>
                     <AudioUi />

@@ -5,9 +5,7 @@ import api from '../../services/ApiService'
 class Home extends Component {
     state = {
         settingsVisible: false,
-        playlists: {
-            collection: []
-        }
+        playlists: []
     }
     componentDidMount = () => {
         api.getPlaylists()
@@ -21,7 +19,7 @@ class Home extends Component {
         return (
             <section className="list">
                 <p>Select a course you want to start.</p>
-                <CourseList playlists={this.state.playlists.collection} />
+                <CourseList playlists={this.state.playlists} />
             </section>
         )
     }

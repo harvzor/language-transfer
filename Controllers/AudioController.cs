@@ -10,21 +10,21 @@ namespace language_transfer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SoundCloudController : ControllerBase
+    public class AudioController : ControllerBase
     {
-        private SoundCloudService SoundCloudService = new SoundCloudService();
-
+        private readonly IAudioService _audioService;
         private readonly IMemoryCache _cache;
-        private const string CacheKey = "soundcloud";
+        private const string CacheKey = "audio";
 
-        public SoundCloudController(IMemoryCache memoryCache)
+        public AudioController(IMemoryCache memoryCache, IAudioService audioService)
         {
+            _audioService = audioService;
             _cache = memoryCache;
         }
 
         [HttpGet("Playlists")]
         [ResponseCache(Duration = 300)]
-        public async Task<ActionResult<object>> Playlists()
+        public ActionResult<IEnumerable<Course>> Playlists()
         {
             var key = CacheKey + "/playlists";
 
@@ -33,16 +33,16 @@ namespace language_transfer.Controllers
                 return result;
             }
 
-            var playlists = await SoundCloudService.GetPlaylists();
+            var playlists = _audioService.GetPlaylists();
 
             _cache.Set(key, playlists, TimeSpan.FromDays(1));
 
-            return playlists;
+            return new ActionResult<IEnumerable<Course>>(playlists);
         }
 
         [HttpGet("Playlist/{id}")]
         [ResponseCache(Duration = 300)]
-        public async Task<ActionResult<dynamic>> Playlist(int id)
+        public ActionResult<Course> Playlist(string id)
         {
             var key = CacheKey + "/playlist/" + id;
 
@@ -51,11 +51,11 @@ namespace language_transfer.Controllers
                 return result;
             }
 
-            var playlist = await SoundCloudService.GetPlaylist(id);
+            var playlist = _audioService.GetPlaylist(id);
 
             _cache.Set(key, playlist, TimeSpan.FromDays(1));
 
-            return playlist;
+            return new ActionResult<Course>(playlist);
         }
     }
 }

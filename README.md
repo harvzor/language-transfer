@@ -2,11 +2,16 @@
 
 Proof of concept (prototype) of Language Transfer web app.
 
-## Getting started
-
 This is a Dot Net Core app with a React frontend.
 
-Run the Dot Net app by typing `dotnet run`.
+## Developing
+
+- Run `dotnet watch run`
+- Connect to https://localhost:5001
+
+## Getting started
+
+Run by typing `dotnet run`.
 
 ## MIT Licensed
 

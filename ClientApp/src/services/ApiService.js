@@ -1,5 +1,5 @@
 var api = function() {
-    const baseUrl = '/api/soundcloud/'
+    const baseUrl = '/api/audio/'
 
     /**
      * @private

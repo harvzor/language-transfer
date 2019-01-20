@@ -16,8 +16,8 @@ class TrackList extends Component {
     render() {
         return (
             <ul>
-                {this.props.tracks.map((track, i) =>
-                    <TrackItem selected={i === this.state.selected} trackSelected={this.handleTrackClick} track={track} id={i} key={i} />
+                {this.props.lessons.map((lesson, i) =>
+                    <TrackItem selected={i === this.state.selected} trackSelected={this.handleTrackClick} lesson={lesson} id={i} key={i} />
                 )}
             </ul>
         )
