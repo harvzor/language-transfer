@@ -56,6 +56,7 @@ var Audio = function () {
     widget.bind(SC.Widget.Events.PLAY, () => {
         this.isPaused = false;
         this.hasStarted = true;
+        // Is this right??
         this.isLoading = true;
 
         stateChange();

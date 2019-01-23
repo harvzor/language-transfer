@@ -13,6 +13,28 @@ This is a Dot Net Core app with a React frontend.
 
 Run by typing `dotnet run`.
 
+## Audio files
+
+### Automated setup
+
+There's a file called `convert.js` which converts the audio files pulled from SoundCloud into `.webm` files, then rewrites them into `base64`.
+
+Make sure to `npm install` before running the script.
+
+`ffmpeg` is needed for the script to work.
+
+### Manual setup
+
+The `mp3` audio files were downloaded from SoundCloud.
+
+I then converted to `webm` as [recommended by hower.js](https://github.com/goldfire/howler.js#format-recommendations):
+
+```
+ffmpeg -i 01.mp3 -dash 1 01.webm
+```
+
+Change the file to base64 (make sure it starts with `data:audio/webm` not `data:video/webm`).
+
 ## MIT Licensed
 
 Copyright 2018 Harvey Williams

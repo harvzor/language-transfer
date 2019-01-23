@@ -57,5 +57,23 @@ namespace language_transfer.Controllers
 
             return new ActionResult<Course>(playlist);
         }
+
+        [HttpGet("Lesson/{id}")]
+        [ResponseCache(Duration = 300)]
+        public ActionResult<string> Lesson(string id)
+        {
+            var key = CacheKey + "/lesson/" + id;
+
+            if (_cache.TryGetValue(key, out dynamic result))
+            {
+                return result;
+            }
+
+            var lesson = _audioService.GetLesson(id);
+
+            _cache.Set(key, lesson, TimeSpan.FromDays(1));
+
+            return new ActionResult<string>(lesson);
+        }
     }
 }

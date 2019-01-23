@@ -2,7 +2,7 @@
     "courses": [
         {
             "title": "Complete German",
-            "path": "/german"
+            "path": "/audio/german/"
         }
     ]
 }

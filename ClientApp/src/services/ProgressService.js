@@ -4,39 +4,54 @@ import Track from '../models/TrackModel'
 /**
  * Handles the user's progress in the browser local storage.
  */
-var progress = function() {
-    let tracks = storage.tracks.get() || [];
+var progressService = function() {
+    let tracks = storage.tracks.get() || []
 
     /**
      * @private
      */
     let save = () => {
-        storage.tracks.set(tracks);
-    };
+        storage.tracks.set(tracks)
+    }
 
     let getTrack = (id) => {
-        return tracks.find(track => track.id === id) || null;
-    };
+        let track = tracks.find(track => track.id === id) || null
 
-    let toggleComplete = (id) => {
-        let track = getTrack(id);
+        console.log(id, track)
 
         if (track == null) {
-            track = new Track({ id: id });
+            track = new Track({
+                id: id
+            })
 
-            tracks.push(track);
+            tracks.push(track)
         }
 
-        track.complete = !track.complete;
+        return track
+    }
 
-        save();
-    };
+    let toggleComplete = (id) => {
+        let track = getTrack(id)
+
+        track.completed = !track.completed
+
+        save()
+    }
+
+    let toggleDownload = (id) => {
+        let track = getTrack(id)
+
+        track.downloaded = !track.downloaded
+
+        save()
+    }
 
     return {
         tracks: tracks,
         getTrack: getTrack,
-        toggleComplete: toggleComplete
-    };
-}();
+        toggleComplete: toggleComplete,
+        toggleDownload: toggleDownload
+    }
+}()
 
-export default progress
+export default progressService

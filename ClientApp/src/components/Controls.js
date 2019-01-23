@@ -7,44 +7,44 @@ class Controls extends Component {
         toggleText: 'Play'
     }
     handleBackClick = (event) => {
-        event.preventDefault();
+        event.preventDefault()
 
-        AudioUi.audio.addSeconds(-5);
+        AudioUi.audio.addSeconds(-5)
     }
     handleToggleClick = (event) => {
-        event.preventDefault();
+        event.preventDefault()
 
-        AudioUi.audio.toggle();
+        AudioUi.audio.toggle()
 
         if (storage.settings.get() !== null && storage.settings.get().vibrate)
-            window.navigator.vibrate(200);
+            window.navigator.vibrate(200)
     }
     handleForwardClick = (event) => {
-        event.preventDefault();
+        event.preventDefault()
 
-        AudioUi.audio.addSeconds(5);
+        AudioUi.audio.addSeconds(5)
     }
     componentDidMount = () => {
-        AudioUi.audio.stateChangeFunctions.push((hasStarted, isPaused, isLoading) => {
-            if (!hasStarted) {
+        AudioUi.audio.stateChangeFunctions.push((state) => {
+            if (!state.hasStarted) {
                 this.setState(() => ({
                     toggleText: 'Play'
                 }))
             }
 
-            if (hasStarted && !isPaused) {
+            if (state.hasStarted && !state.isPaused) {
                 this.setState(() => ({
                     toggleText: 'Pause'
                 }))
             }
 
-            if (isLoading) {
+            if (state.isLoading) {
                 this.setState(() => ({
                     toggleText: 'Loading...'
                 }))
             }
 
-            if (hasStarted && isPaused) {
+            if (state.hasStarted && state.isPaused) {
                 this.setState(() => ({
                     toggleText: 'Resume'
                 }))

@@ -1,31 +1,47 @@
 import React, { Component } from 'react'
-import AudioUi from './AudioUi'
-import progress from '../services/ProgressService'
+import progressService from '../services/ProgressService'
 
 class TrackItem extends Component {
     state = {
-        isComplete: progress.getTrack(this.props.lesson.id) == null ? false : progress.getTrack(this.props.lesson.id).complete
+        isComplete: false,
+        isDownloaded: false
+    }
+    componentDidMount = () => {
+        let track = progressService.getTrack(this.props.lesson.id)
+
+        this.setState(() => ({
+            isComplete: track.completed,
+            isDownloaded: track.downloaded
+        }))
     }
     handleClick = (event) => {
         event.preventDefault()
 
-        AudioUi.audio.changeTrack(this.props.lesson.id)
+        this.props.trackSelected(this.props.lesson)
+    }
+    downloadHandClick = (event) => {
+        event.preventDefault()
 
-        this.props.trackSelected(this.props.id)
+        progressService.toggleDownload(this.props.lesson.id)
+
+        this.setState(() => ({
+            isDownloaded: progressService.getTrack(this.props.lesson.id).downloaded
+        }))
     }
     completionHandleClick = (event) => {
         event.preventDefault()
 
-        progress.toggleComplete(this.props.lesson.id)
+        progressService.toggleComplete(this.props.lesson.id)
 
         this.setState(() => ({
-            isComplete: progress.getTrack(this.props.lesson.id).complete
+            isComplete: progressService.getTrack(this.props.lesson.id).completed
         }))
     }
     render() {
         return (
             <li className={this.props.selected ? "selected" : ""}>
                 <a href={'#' + this.props.lesson.id} data-id={this.props.lesson.id} onClick={this.handleClick}>{this.props.lesson.title}</a>
+                <a href={'#' + this.props.lesson.id} data-id={this.props.lesson.id} onClick={this.downloadHandClick}>{this.state.isDownloaded ? "Delete download" : "Download"}</a>
                 <a href={'#' + this.props.lesson.id} data-id={this.props.lesson.id} onClick={this.completionHandleClick}>Mark {this.state.isComplete ? "uncomplete" : "complete"}</a>
             </li>
         )

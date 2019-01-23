@@ -4,10 +4,15 @@ var api = function() {
     /**
      * @private
      */
-    var get = (item, data) => {
+    var get = (item, isJson) => {
         return new Promise((resolve, reject) => {
             fetch(baseUrl + item)
-                .then(resp => resp.json())
+                .then(resp => {
+                    if (isJson)
+                        return resp.json()
+
+                    return resp.text()
+                })
                 .then(data => {
                     resolve(data)
                 })
@@ -18,16 +23,21 @@ var api = function() {
     };
 
     var getPlaylists = () => {
-        return get('playlists')
+        return get('playlists', true)
     }
 
     var getPlaylist = (id) => {
-        return get('playlist/' + id)
+        return get('playlist/' + id, true)
+    }
+
+    var getLesson = (id) => {
+        return get('lesson/' + id, false)
     }
 
     return {
         getPlaylists: getPlaylists,
-        getPlaylist: getPlaylist
+        getPlaylist: getPlaylist,
+        getLesson: getLesson
     }
 }()
 

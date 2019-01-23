@@ -6,18 +6,18 @@ class TrackList extends Component {
         // The index of the selected track.
         selected: null
     }
-    handleTrackClick = (i) => {
+    handleTrackClick = (lesson) => {
         this.setState(() => ({
-            selected: i
+            selected: lesson.id
         }))
 
-        this.props.trackSelected()
+        this.props.trackSelected(lesson)
     }
     render() {
         return (
             <ul>
                 {this.props.lessons.map((lesson, i) =>
-                    <TrackItem selected={i === this.state.selected} trackSelected={this.handleTrackClick} lesson={lesson} id={i} key={i} />
+                    <TrackItem selected={i === this.state.selected} trackSelected={this.handleTrackClick} lesson={lesson} key={i} />
                 )}
             </ul>
         )

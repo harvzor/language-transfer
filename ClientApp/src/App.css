@@ -120,7 +120,23 @@ h1.home {
 }
 
 .audio {
+    position:relative;
     height:120px;
+}
+
+/* Todo: centre unknown better */
+.audio-information {
+    position:absolute;
+    top:70%;
+    width:100%;
+    height:100%;
+    text-align:center;
+    pointer-events:none;
+}
+
+.audio-progress {
+    height:100%;
+    background-color:grey;
 }
 
 .controls {
@@ -160,6 +176,7 @@ h1.home {
     position:relative;
     border:1px solid black;
     margin:10px 0;
+    overflow:hidden;
 }
 
 .list ul li:last-child {
@@ -180,6 +197,7 @@ h1.home {
 }
 
 .list ul li a {
+    float:left;
     display:block;
     padding:10px;
     color:black;
@@ -187,10 +205,7 @@ h1.home {
 }
 
 .list ul li a + a {
-    position:absolute;
-    right:0;
-    top:0;
-    height:100%;
+    float:right;
     border-left:1px solid black;
 }
 

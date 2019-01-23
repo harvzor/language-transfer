@@ -22,10 +22,12 @@ class Course extends Component {
                 }))
             });
     }
-    trackSelectedEvent = () => {
+    trackSelectedEvent = (lesson) => {
         this.setState(() => ({
             trackSelected: true
         }))
+
+        AudioUi.audio.changeTrack(lesson, this.state.course.path)
     }
     render() {
         return (

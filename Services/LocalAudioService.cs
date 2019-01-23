@@ -35,7 +35,7 @@ namespace language_transfer.Services
 
                     _data.Courses.ToList().ForEach(course =>
                     {
-                        var audioFilePaths = Directory.EnumerateFiles(env.ContentRootPath + "/ClientApp/public/audio" + course.Path);
+                        var audioFilePaths = Directory.EnumerateFiles(env.ContentRootPath + "/ClientApp/public/" + course.Path);
 
                         course.Id = course.Title
                             .ToLower()
@@ -65,6 +65,11 @@ namespace language_transfer.Services
         public Course GetPlaylist(string id)
         {
             return Data.Courses.FirstOrDefault(course => course.Id == id);
+        }
+
+        public string GetLesson(string id)
+        {
+            return File.ReadAllText(env.ContentRootPath + "/ClientApp/public/audio/german/" + id);
         }
     }
 }
