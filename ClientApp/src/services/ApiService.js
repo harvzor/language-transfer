@@ -34,10 +34,26 @@ var api = function() {
         return get('lesson/' + id, false)
     }
 
+    var getLessonAudio = (audioPath) => {
+        return new Promise((resolve, reject) => {
+            fetch(audioPath)
+                .then(resp => {
+                    return resp.text()
+                })
+                .then(data => {
+                    resolve(data)
+                })
+                .catch(() => {
+                    reject()
+                })
+        })
+    }
+
     return {
         getPlaylists: getPlaylists,
         getPlaylist: getPlaylist,
-        getLesson: getLesson
+        getLesson: getLesson,
+        getLessonAudio: getLessonAudio
     }
 }()
 

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "dexie": "^2.0.4",
     "howler": "^2.1.1",
     "moment": "^2.23.0",
     "nosleep.js": "^0.7.0",

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import TrackList from '../TrackList'
 import AudioUi from '../AudioUi'
 import api from '../../services/ApiService'
+import progressService from '../../services/ProgressService'
 
 class Course extends Component {
     state = {
@@ -29,12 +30,15 @@ class Course extends Component {
 
         AudioUi.audio.changeTrack(lesson, this.state.course.path)
     }
+    downloadTrackEvent = (lesson) => {
+        return progressService.toggleDownload(lesson.id, this.state.course.path + lesson.fileName)
+    }
     render() {
         return (
             <div>
                 <section className="list tracks">
                     <p>Select a track to be played.</p>
-                    <TrackList lessons={this.state.course.lessons} trackSelected={this.trackSelectedEvent} />
+                    <TrackList lessons={this.state.course.lessons} trackSelected={this.trackSelectedEvent} downloadTrackEvent={this.downloadTrackEvent} />
                 </section>
                 <div className={"ui-container" + (this.state.trackSelected ? "" : " hidden")}>
                     <AudioUi />

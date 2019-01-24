@@ -7,9 +7,22 @@ var Track = function(track) {
     // If the lesson has been downloaded.
     this.downloaded = track.downloaded || false
 
-    // The downloaded audio.
-    this.getAudio = () => {
+    // The less audio.
+    this.audio = track.audio || null
 
+    this.getLocalStorageObject = () => {
+        return {
+            id: this.id,
+            completed: this.completed,
+            downloaded: this.downloaded
+        }
+    }
+
+    this.getDbStorageObject = () => {
+        return {
+            id: this.id,
+            audio: this.audio
+        }
     }
 }
 

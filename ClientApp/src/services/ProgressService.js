@@ -1,23 +1,22 @@
-import storage from './StorageService'
+import storageService from './StorageService'
 import Track from '../models/TrackModel'
+import apiService from './ApiService'
 
 /**
  * Handles the user's progress in the browser local storage.
  */
 var progressService = function() {
-    let tracks = storage.tracks.get() || []
+    let tracks = storageService.tracks.get() || []
 
     /**
      * @private
      */
     let save = () => {
-        storage.tracks.set(tracks)
+        storageService.tracks.set(tracks)
     }
 
     let getTrack = (id) => {
         let track = tracks.find(track => track.id === id) || null
-
-        console.log(id, track)
 
         if (track == null) {
             track = new Track({
@@ -38,12 +37,34 @@ var progressService = function() {
         save()
     }
 
-    let toggleDownload = (id) => {
-        let track = getTrack(id)
+    let toggleDownload = (id, audioPath) => {
+        return new Promise((resolve, reject) => {
+            let track = getTrack(id)
 
-        track.downloaded = !track.downloaded
+            if (track.downloaded) {
+                track.audio = null
 
-        save()
+                track.downloaded = false
+
+                save()
+
+                resolve()
+            } else {
+                apiService.getLessonAudio(audioPath)
+                    .then(audio => {
+                        track.audio = audio
+
+                        track.downloaded = true
+
+                        save()
+
+                        resolve()
+                    })
+                    .catch(() => {
+                        resolve()
+                    })
+            }
+        })
     }
 
     return {
