@@ -2,7 +2,7 @@
 
 Proof of concept (prototype) of Language Transfer web app.
 
-This is a .NET Core app with a React frontend.
+This is a .NET Core app with a React front end.
 
 <p align="center">
     <img alt="Language Transfer Web App on iPhone" src="/project/language-transfer-v1.png"/>
