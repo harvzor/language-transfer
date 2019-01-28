@@ -1,23 +1,46 @@
-# LanguageTransfer2
+# Language Transfer Web App
 
 Proof of concept (prototype) of Language Transfer web app.
 
-This is a Dot Net Core app with a React frontend.
+This is a .NET Core app with a React frontend.
+
+<span class="center">![Language Transfer Web App On iPhone](/project/language-transfer-v1.png)</span>
+
+## About
+
+### What is Language Transfer?
+
+Language Transfer is a free audio course provided by Mihalis Eleftheriou.
+
+The audio course avoids learning grammar, and instead builds on knowledge which is available to the listener. The listener learns how to ask something in a target language by building on what they already know.
+
+I think this approach is very easy to get into and I highly recommend the audiou course.
+
+You can read more about the audio course available at https://www.languagetransfer.org/whats-language-transfer.
+
+### What is this project?
+
+I found that listening to the audio courses was quite difficult using pre-existing software (such as tradional audio players, or SoundCloud/YouTube where the tracks are already hosted).
+
+This web app aims to solve these issues:
+
+- unless the user downloads the tracks, the tracks cannot be listened to offline
+- remembering which track can be hard without personally noting down which tracks I've listened to
+- difficult to skip forwards and backwards by a few seconds in the track
+- the phone screen turns off while the course is playing (hindering the ability to pause the track to think)
 
 ## Developing
 
 - Run `dotnet watch run`
 - Connect to https://localhost:5001
 
-## Getting started
-
-Run by typing `dotnet run`.
-
 ## Audio files
+
+Audio files are needed for this project to work. For space saving reasons (not wanting the repo to get too large) they need to be added to the project.
 
 ### Automated setup
 
-There's a file called `convert.js` which converts the audio files pulled from SoundCloud into `.webm` files, then rewrites them into `base64`.
+There's a file called `convert.js` which converts the audio files pulled from SoundCloud into `.webm` files, then rewrites them into `base64` (this step appears to be unnecessary).
 
 Make sure to `npm install` before running the script.
 
@@ -34,13 +57,3 @@ ffmpeg -i 01.mp3 -dash 1 01.webm
 ```
 
 Change the file to base64 (make sure it starts with `data:audio/webm` not `data:video/webm`).
-
-## MIT Licensed
-
-Copyright 2018 Harvey Williams
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
