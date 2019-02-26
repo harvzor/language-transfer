@@ -166,6 +166,14 @@ h1.home {
     /*padding-bottom:270px;*/
 }
 
+.tracks ul li {
+    display:flex;
+}
+
+.tracks ul li a:first-child {
+    flex-grow:1;
+}
+
 .list ul {
     list-style:none;
     margin:0;
