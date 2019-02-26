@@ -22,9 +22,12 @@ namespace language_transfer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
             services.AddResponseCaching();
+
             // GZIP
             //services.AddResponseCompression();
+            
             services.AddMemoryCache();
 
             //services.AddScoped<IAudioService, SoundCloudService>();
