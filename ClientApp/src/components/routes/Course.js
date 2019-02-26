@@ -3,6 +3,7 @@ import TrackList from '../TrackList'
 import AudioUi from '../AudioUi'
 import api from '../../services/ApiService'
 import progressService from '../../services/ProgressService'
+import Track from '../../models/TrackModel'
 
 class Course extends Component {
     state = {

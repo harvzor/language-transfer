@@ -1,14 +1,14 @@
-var Track = function(track) {
-    this.id = track.id || null
+var Track = function(lesson) {
+    this.id = lesson.id || null
 
     // If the lesson has been compelted.
-    this.completed = track.completed || false
+    this.completed = lesson.completed || false
 
     // If the lesson has been downloaded.
-    this.downloaded = track.downloaded || false
+    this.downloaded = lesson.downloaded || false
 
     // The less audio.
-    this.audio = track.audio || null
+    this.audio = lesson.audio || null
 
     this.getLocalStorageObject = () => {
         return {
