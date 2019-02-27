@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import TrackList from '../TrackList'
 import AudioUi from '../AudioUi'
 import api from '../../services/ApiService'
-import progressService from '../../services/ProgressService'
-import Track from '../../models/TrackModel'
+import Lesson from '../../models/LessonModel'
 
 class Course extends Component {
     state = {
@@ -19,10 +18,21 @@ class Course extends Component {
             .then(course => {
                 this.props.updateTitle(course.title)
 
-                this.setState(() => ({
-                    course: course
-                }))
-            });
+                course.lessons = course.lessons
+                    .map(lesson => new Lesson(lesson))
+
+                Promise.all(
+                    course.lessons
+                        .map(lesson => lesson.getSaved())
+                )
+                .then(lessons => {
+                    course.lessons = lessons
+
+                    this.setState(() => ({
+                        course: course
+                    }))
+                })
+            })
     }
     trackSelectedEvent = (lesson) => {
         this.setState(() => ({
@@ -30,9 +40,6 @@ class Course extends Component {
         }))
 
         AudioUi.audio.changeTrack(lesson, this.state.course.path)
-    }
-    downloadTrackEvent = (lesson) => {
-        return progressService.toggleDownload(lesson.id, this.state.course.path + lesson.fileName)
     }
     render() {
         return (

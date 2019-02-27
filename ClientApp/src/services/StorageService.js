@@ -1,59 +1,68 @@
 import dbService from './dbService'
-import TrackModel from '../models/TrackModel'
+import Lesson from '../models/LessonModel'
 
 var storage = function() {
-    let tracks = function() {
-        let key = 'tracks'
+    let lessons = function() {
+        //let key = 'tracks'
 
-        let get = () => {
-            let storedTracks = JSON.parse(localStorage.getItem(key))
+        let getAll = async() => {
+            return (await dbService.getAll())
+                .map(lesson => new Lesson(lesson))
 
-            if (!storedTracks) {
-                return null
-            }
+            /*
+                let storedTracks = JSON.parse(localStorage.getItem(key))
 
-            storedTracks = storedTracks.map(track => {
-                track.audio = null
+                if (!storedTracks) {
+                    return null
+                }
 
-                return track
-            })
+                storedTracks = storedTracks.map(track => {
+                    track.audio = null
 
-            storedTracks.forEach((track) => {
-                dbService.get(track.id)
-                    .then((dbTrack) => {
-                        if (dbTrack) {
-                            track.audio = dbTrack.audio
+                    return track
+                })
 
-                            console.log(track)
-                        }
-                    })
-                    .catch((e) => {
-                        console.error(e)
-                    })
-            })
+                storedTracks.forEach((track) => {
+                    dbService.get(track.id)
+                        .then((dbTrack) => {
+                            if (dbTrack) {
+                                track.audio = dbTrack.audio
+                            }
+                        })
+                        .catch((e) => {
+                            console.error(e)
+                        })
+                })
 
-            return storedTracks.map(storedTrack => new TrackModel(storedTrack))
+                return storedTracks.map(storedTrack => new Lesson(storedTrack))
+            */
         }
 
-        let set = (tracksForSaving) => {
-            let localStorageTracks = tracksForSaving.map(track => track.getLocalStorageObject())
-
-            localStorage.setItem(key, JSON.stringify(localStorageTracks))
-
-            if (tracksForSaving.audio === null) {
+        let setAll = (lessonsForSaving) => {
+            if (lessonsForSaving.audio === null) {
+                // ??
             } else {
-                tracksForSaving
-                    .filter(track => track.downloaded)
-                    .map(track => track.getDbStorageObject())
-                    .forEach(track => {
-                        dbService.set(track)
+                lessonsForSaving
+                    .forEach(lesson => {
+                        dbService.set(lesson)
                     })
             }
+        }
+
+        let get = async(id) => {
+            return (await getAll())
+                .find(lesson => lesson.id === id) || null
+        }
+
+        let set = (lesson) => {
+            dbService.set(lesson)
         }
 
         return {
             get: get,
-            set: set
+            getAll: getAll,
+            set: set,
+            setAll: setAll
         }
     }()
 
@@ -75,7 +84,7 @@ var storage = function() {
     }()
 
     return {
-        tracks: tracks,
+        lessons: lessons,
         settings: settings
     }
 }()

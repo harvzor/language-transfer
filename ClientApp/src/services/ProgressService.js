@@ -1,29 +1,30 @@
 import storageService from './StorageService'
-import Track from '../models/TrackModel'
+import Lesson from '../models/LessonModel'
 import apiService from './ApiService'
 
 /**
+ * DEPRECATED!
  * Handles the user's progress in the browser local storage.
  */
 var progressService = function() {
-    let tracks = storageService.tracks.get() || []
+    let lessons = storageService.lessons.getAll() || []
 
     /**
      * @private
      */
     let save = () => {
-        storageService.tracks.set(tracks)
+        storageService.lessons.setAll(lessons)
     }
 
     let getTrack = (id) => {
-        let track = tracks.find(track => track.id === id) || null
+        let track = lessons.find(track => track.id === id) || null
 
         if (track == null) {
-            track = new Track({
+            track = new Lesson({
                 id: id
             })
 
-            tracks.push(track)
+            lessons.push(track)
         }
 
         return track
@@ -68,7 +69,7 @@ var progressService = function() {
     }
 
     return {
-        tracks: tracks,
+        tracks: lessons,
         getTrack: getTrack,
         toggleComplete: toggleComplete,
         toggleDownload: toggleDownload

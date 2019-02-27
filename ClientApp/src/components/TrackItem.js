@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import progressService from '../services/ProgressService'
+import storageService from '../services/StorageService'
 
 class TrackItem extends Component {
     state = {
@@ -8,32 +8,35 @@ class TrackItem extends Component {
         isDownloaded: false
     }
     componentDidMount = () => {
-        let track = progressService.getTrack(this.props.lesson.id)
-
-        this.setState(() => ({
-            isComplete: track.completed,
-            isDownloaded: track.downloaded
-        }))
+        storageService.lessons.get(this.props.lesson.id)
+            .then(lesson => {
+                if (lesson !== null) {
+                    this.setState(() => ({
+                        isComplete: lesson.completed,
+                        isDownloaded: lesson.downloaded
+                    }))
+                }
+            })
     }
     handleClick = (event) => {
         event.preventDefault()
 
         this.props.trackSelected(this.props.lesson)
     }
-    downloadHandleClick = (event) => {
+    downloadHandleClick = async(event) => {
         event.preventDefault()
 
         this.setState(() => ({
             isDownloading: true
         }))
 
-        this.props.downloadTrackEvent(this.props.lesson)
-            .then(() => {
-                this.setState(() => ({
-                    isDownloaded: progressService.getTrack(this.props.lesson.id).downloaded,
-                    isDownloading: false
-                }))
-            })
+        await this.props.lesson.toggleDownload()
+        await this.props.lesson.save()
+
+        this.setState(() => ({
+            isDownloaded: this.props.lesson.downloaded,
+            isDownloading: false
+        }))
     }
     downloadText = () => {
         if (this.state.isDownloading)
@@ -44,13 +47,14 @@ class TrackItem extends Component {
 
         return "Download"
     }
-    completionHandleClick = (event) => {
+    completionHandleClick = async(event) => {
         event.preventDefault()
 
-        progressService.toggleComplete(this.props.lesson.id)
+        await this.props.lesson.toggleComplete()
+        await this.props.lesson.save()
 
         this.setState(() => ({
-            isComplete: progressService.getTrack(this.props.lesson.id).completed
+            isComplete: this.props.lesson.completed
         }))
     }
     render() {

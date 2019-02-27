@@ -9,7 +9,7 @@ var dbService = function() {
     db
         .version(1)
         .stores({
-            lessons: '&id,audio'
+            lessons: '&id,title,fileName,completed,downloaded,audio'
         })
 
     let get = (id) => {
@@ -28,6 +28,10 @@ var dbService = function() {
         })
     }
 
+    let getAll = async() => {
+        return db.lessons.toArray()
+    }
+
     /*
     let get = (id) => {
         return new Promise((resolve, reject) => {
@@ -44,11 +48,10 @@ var dbService = function() {
     */
 
     let set = async(lesson) => {
+        console.log(lesson);
+
         return await db.lessons
-            .add({
-                id: lesson.id,
-                audio: lesson.audio
-            })
+            .put(lesson)
     }
 
     let remove = async(id) => {
@@ -79,6 +82,7 @@ var dbService = function() {
 
     return {
         get: get,
+        getAll: getAll,
         set: set,
         remove: remove
     }
