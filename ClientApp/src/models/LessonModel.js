@@ -25,8 +25,14 @@ var Lesson = function(lesson) {
 
             this.downloaded = false
         } else {
-            // TODO
-            this.audio = await apiService.getLessonAudio('/audio/german/' + this.fileName)
+            //console.log(await apiService.getLessonAudio('/audio/german/' + this.fileName))
+            // TODO: audio path
+            //this.audio = await apiService.getLessonAudio('/audio/german/' + this.fileName)
+
+            // TODO: audio path
+            this.audio = await apiService.getLessonAudio('/api/audio/lesson/' + this.fileName)
+
+            console.log(this.audio)
 
             this.downloaded = true
         }

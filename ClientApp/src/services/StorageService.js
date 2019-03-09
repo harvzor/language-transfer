@@ -8,34 +8,6 @@ var storage = function() {
         let getAll = async() => {
             return (await dbService.getAll())
                 .map(lesson => new Lesson(lesson))
-
-            /*
-                let storedTracks = JSON.parse(localStorage.getItem(key))
-
-                if (!storedTracks) {
-                    return null
-                }
-
-                storedTracks = storedTracks.map(track => {
-                    track.audio = null
-
-                    return track
-                })
-
-                storedTracks.forEach((track) => {
-                    dbService.get(track.id)
-                        .then((dbTrack) => {
-                            if (dbTrack) {
-                                track.audio = dbTrack.audio
-                            }
-                        })
-                        .catch((e) => {
-                            console.error(e)
-                        })
-                })
-
-                return storedTracks.map(storedTrack => new Lesson(storedTrack))
-            */
         }
 
         let setAll = (lessonsForSaving) => {

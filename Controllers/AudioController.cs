@@ -69,7 +69,7 @@ namespace language_transfer.Controllers
                 return result;
             }
 
-            var lesson = _audioService.GetLesson(id);
+            var lesson = "data:audio/webm;base64," + Convert.ToBase64String(_audioService.GetLesson(id));
 
             _cache.Set(key, lesson, TimeSpan.FromDays(1));
 

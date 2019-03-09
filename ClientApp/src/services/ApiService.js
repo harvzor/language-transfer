@@ -38,6 +38,7 @@ var api = function() {
         return new Promise((resolve, reject) => {
             fetch(audioPath)
                 .then(resp => {
+                    //return resp.blob()
                     return resp.text()
                 })
                 .then(data => {

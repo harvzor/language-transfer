@@ -7,5 +7,5 @@ public interface IAudioService
 
     Course GetPlaylist(string id);
 
-    string GetLesson(string id);
+    byte[] GetLesson(string id);
 }

@@ -1,5 +1,4 @@
 import {Howl/*, Howler*/} from 'howler'
-import api from './ApiService'
 
 /**
  * Handle the audio player.
@@ -151,8 +150,9 @@ var Audio = function () {
         this.isLoading = true
 
         track = new Howl({
-            // Todo: fix src
-            src: path + lesson.fileName
+            src: lesson.downloaded
+                ? lesson.audio
+                : path + lesson.fileName
         })
 
         setupEvents()

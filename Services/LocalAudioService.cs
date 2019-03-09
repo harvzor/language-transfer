@@ -67,9 +67,10 @@ namespace language_transfer.Services
             return Data.Courses.FirstOrDefault(course => course.Id == id);
         }
 
-        public string GetLesson(string id)
+        public byte[] GetLesson(string id)
         {
-            return File.ReadAllText(env.ContentRootPath + "/ClientApp/public/audio/german/" + id);
+            // TODO: fix path
+            return File.ReadAllBytes(env.ContentRootPath + "/ClientApp/public/audio/german/" + id);
         }
     }
 }

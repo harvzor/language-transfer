@@ -58,4 +58,4 @@ I then converted to `webm` as [recommended by hower.js](https://github.com/goldf
 ffmpeg -i 01.mp3 -dash 1 01.webm
 ```
 
-Change the file to base64 (make sure it starts with `data:audio/webm` not `data:video/webm`).
+Change the file to base64 (make sure it starts with `data:audio/webm,` not `data:video/webm,`).
