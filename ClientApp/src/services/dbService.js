@@ -48,8 +48,6 @@ var dbService = function() {
     */
 
     let set = async(lesson) => {
-        console.log(lesson);
-
         return await db.lessons
             .put(lesson)
     }

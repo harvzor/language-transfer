@@ -48,7 +48,7 @@ var Audio = function () {
      * @private
      */
     let progressChange = () => {
-        if (this.isPaused)
+        if (this.isPaused || this.isLoading)
             return
 
         this.position = track.seek()
@@ -65,8 +65,6 @@ var Audio = function () {
      */
     let setupEvents = () => {
         track.on('load', () => {
-            console.log('load')
-
             this.duration = track.duration()
 
             this.isLoading = false
@@ -75,8 +73,6 @@ var Audio = function () {
         })
 
         track.on('play', () => {
-            console.log('play')
-
             this.isPaused = false
             this.hasStarted = true
             this.isLoading = false
@@ -86,9 +82,12 @@ var Audio = function () {
         })
 
         track.on('pause', () => {
-            console.log('load')
-
             this.isPaused = true
+
+            stateChange()
+        })
+
+        track.on('stop', () => {
 
             stateChange()
         })
@@ -144,6 +143,19 @@ var Audio = function () {
      * @param {string} path Path to the folder which the audio is stored.
      */
     this.changeTrack = (lesson, path) => {
+        if (track !== null) {
+            // These values cannot be put in the on stop event as the on stop event doesn't execute fast enough.
+            this.isPaused = null
+            this.isLoading = null
+            this.hasStarted = null
+
+            this.progress = 0
+            this.duration = 0
+            this.position = 0
+
+            track.unload()
+        }
+
         this.trackId = lesson.id
 
         this.hasStarted = false
@@ -157,18 +169,6 @@ var Audio = function () {
 
         setupEvents()
         stateChange()
-
-        /*
-            api.getLesson(id)
-                .then(lesson => {
-                    track = new Howl({
-                        src: lesson
-                    })
-
-                    setupEvents()
-                    stateChange()
-                })
-        */
     }
 
     /**
