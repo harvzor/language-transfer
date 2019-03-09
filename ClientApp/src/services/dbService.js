@@ -9,7 +9,9 @@ var dbService = function() {
     db
         .version(1)
         .stores({
-            lessons: '&id,title,fileName,completed,downloaded,audio'
+            // Audio is deliberately not indexed.
+            // https://dexie.org/docs/Version/Version.stores()#warning
+            lessons: '&id,title,fileName,completed,downloaded'
         })
 
     let get = (id) => {

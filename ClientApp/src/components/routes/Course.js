@@ -18,20 +18,56 @@ class Course extends Component {
             .then(course => {
                 this.props.updateTitle(course.title)
 
-                course.lessons = course.lessons
+                let lessons = course.lessons
                     .map(lesson => new Lesson(lesson))
 
-                Promise.all(
-                    course.lessons
-                        .map(lesson => lesson.getSaved())
-                )
-                .then(lessons => {
-                    course.lessons = lessons
+                course.lessons = []
 
-                    this.setState(() => ({
-                        course: course
-                    }))
-                })
+                this.getSavedLessons(course, lessons, 0)
+
+                /*
+                    lessons
+                        .forEach(lesson => {
+                            lesson.getSaved()
+                                .then(lesson => {
+                                    course.lessons.push(lesson)
+
+                                    this.setState(() => ({
+                                        course: course
+                                    }))
+                                })
+                        })
+                */
+
+                /* This proves to be very slow when the audio data has been downloaded.
+                    Promise.all(
+                        course.lessons
+                            .map(lesson => lesson.getSaved())
+                    )
+                    .then(lessons => {
+                        course.lessons = lessons
+
+                        this.setState(() => ({
+                            course: course
+                        }))
+                    })
+                */
+            })
+    }
+    getSavedLessons = (course, lessons, index) => {
+        if (lessons.length === index) {
+            return
+        }
+
+        lessons[index].getSaved()
+            .then(lesson => {
+                course.lessons.push(lesson)
+
+                this.setState(() => ({
+                    course: course
+                }))
+
+                this.getSavedLessons(course, lessons, index + 1)
             })
     }
     trackSelectedEvent = (lesson) => {

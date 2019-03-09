@@ -18,7 +18,6 @@ class AudioElement extends Component {
         AudioUi.audio = new Audio()
 
         AudioUi.audio.stateChangeFunctions.push((state) => {
-            console.log(state)
             this.setState({
                 progress: state.progress,
                 position: state.position,

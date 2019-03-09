@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import storageService from '../services/StorageService'
 
 class TrackItem extends Component {
     state = {
@@ -8,15 +7,10 @@ class TrackItem extends Component {
         isDownloaded: false
     }
     componentDidMount = () => {
-        storageService.lessons.get(this.props.lesson.id)
-            .then(lesson => {
-                if (lesson !== null) {
-                    this.setState(() => ({
-                        isComplete: lesson.completed,
-                        isDownloaded: lesson.downloaded
-                    }))
-                }
-            })
+        this.setState(() => ({
+            isComplete: this.props.lesson.completed,
+            isDownloaded: this.props.lesson.downloaded
+        }))
     }
     handleClick = (event) => {
         event.preventDefault()
