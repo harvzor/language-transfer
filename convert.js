@@ -38,9 +38,11 @@ fs.readdir(inputPath, (err, files) => {
                 .on('end', () => {
                     console.log(`converted ${fileName} to ${outputFileType}`)
 
+                    /*
                     fileToBase64(outputFilePath, fileBaseName, () => {
                         console.log(`converted ${fileName} to base64`)
                     })
+                    */
                 })
                 .on('error', () => {
                     console.log('error converting ${fileName}')
