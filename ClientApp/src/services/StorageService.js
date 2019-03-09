@@ -22,8 +22,12 @@ var storage = function() {
         }
 
         let get = async(id) => {
-            return (await getAll())
-                .find(lesson => lesson.id === id) || null
+            let lesson = await dbService.get(id)
+
+            if (lesson === null)
+                return null
+
+            return new Lesson(lesson)
         }
 
         let set = (lesson) => {

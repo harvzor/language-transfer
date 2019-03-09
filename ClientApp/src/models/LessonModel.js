@@ -49,7 +49,14 @@ var Lesson = function(lesson) {
     }
 
     this.getSaved = async() => {
-        return await storageService.lessons.get(this.id) || this
+        try
+        {
+            return await storageService.lessons.get(this.id)
+        }
+        catch
+        {
+            return this
+        }
     }
 }
 

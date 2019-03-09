@@ -15,19 +15,7 @@ var dbService = function() {
         })
 
     let get = (id) => {
-        return new Promise((resolve, reject) => {
-            db.lessons.get(id)
-                .then(lesson => {
-                    resolve(lesson)
-                })
-                .catch(e => {
-                    if (e.name === 'DataError') {
-                        resolve(null)
-                    } else {
-                        reject(e)
-                    }
-                })
-        })
+        return db.lessons.get(id)
     }
 
     let getAll = async() => {
