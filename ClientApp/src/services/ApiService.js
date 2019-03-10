@@ -22,12 +22,12 @@ var api = function() {
         });
     };
 
-    var getPlaylists = () => {
-        return get('playlists', true)
+    var getCourses = () => {
+        return get('courses', true)
     }
 
-    var getPlaylist = (id) => {
-        return get('playlist/' + id, true)
+    var getCourse = (id) => {
+        return get('course/' + id, true)
     }
 
     var getLesson = (id) => {
@@ -51,8 +51,8 @@ var api = function() {
     }
 
     return {
-        getPlaylists: getPlaylists,
-        getPlaylist: getPlaylist,
+        getCourses: getCourses,
+        getCourse: getCourse,
         getLesson: getLesson,
         getLessonAudio: getLessonAudio
     }

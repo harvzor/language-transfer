@@ -3,8 +3,11 @@ using Newtonsoft.Json;
 [JsonObject("lesson")]
 public class Lesson
 {
-    [JsonProperty("id")]
-    public string Id;
+    [JsonProperty("lessonId")]
+    public int LessonId;
+
+    [JsonProperty("courseName")]
+    public string CourseName;
 
     [JsonProperty("title")]
     public string Title;

@@ -1,8 +1,14 @@
 {
     "courses": [
         {
+            "name": "complete-german",
             "title": "Complete German",
             "path": "/audio/german/"
+        },
+        {
+            "name": "spanish",
+            "title": "Spanish",
+            "path": "/audio/spanish/"
         }
     ]
 }

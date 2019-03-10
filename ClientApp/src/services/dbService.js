@@ -11,68 +11,33 @@ var dbService = function() {
         .stores({
             // Audio is deliberately not indexed.
             // https://dexie.org/docs/Version/Version.stores()#warning
-            lessons: '&id,title,fileName,completed,downloaded'
+            lessons: '++id, [lessonId+courseName]'
         })
 
-    let get = (id) => {
-        return db.lessons.get(id)
+    let get = async(lessonId, courseName) => {
+        return db.lessons.get({ lessonId: lessonId, courseName: courseName })
     }
 
     let getAll = async() => {
         return db.lessons.toArray()
     }
 
-    /*
-    let get = (id) => {
-        return new Promise((resolve, reject) => {
-            db.transaction('r', db.lessons, async() => {
-                resolve(await db.lessons.get(id))
-            })
-            .catch(e => {
-                console.error(e)
-
-                reject(e)
-            })
-        })
-    }
-    */
-
     let set = async(lesson) => {
         return await db.lessons
             .put(lesson)
     }
 
-    let remove = async(id) => {
-        return await db.lessons
-            .delete(id)
-    }
-
-    /*
-    let set = (lesson) => {
-        return new Promise((resolve, reject) => {
-            db.transaction('w', db.lessons, async() => {
-                db.lessons
-                    .add({
-                        id: lesson.id,
-                        audio: lesson.audio
-                    })
-
-                resolve()
-            })
-            .catch(e => {
-                console.error(e)
-
-                reject(e)
-            })
-        })
-    }
+    /* Commented out because this isn't being used anywhere... yet.
+        let remove = async(lessonId, courseId) => {
+            return await db.lessons
+                .delete({ lessonId: lessonId, courseId: courseId })
+        }
     */
 
     return {
         get: get,
         getAll: getAll,
-        set: set,
-        remove: remove
+        set: set
     }
 }()
 

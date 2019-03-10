@@ -22,40 +22,40 @@ namespace language_transfer.Controllers
             _cache = memoryCache;
         }
 
-        [HttpGet("Playlists")]
+        [HttpGet("Courses")]
         [ResponseCache(Duration = 300)]
-        public ActionResult<IEnumerable<Course>> Playlists()
+        public ActionResult<IEnumerable<Course>> Courses()
         {
-            var key = CacheKey + "/playlists";
+            var key = CacheKey + "/courses";
 
             if (_cache.TryGetValue(key, out dynamic result))
             {
                 return result;
             }
 
-            var playlists = _audioService.GetPlaylists();
+            var courses = _audioService.GetCourses();
 
-            _cache.Set(key, playlists, TimeSpan.FromDays(1));
+            _cache.Set(key, courses, TimeSpan.FromDays(1));
 
-            return new ActionResult<IEnumerable<Course>>(playlists);
+            return new ActionResult<IEnumerable<Course>>(courses);
         }
 
-        [HttpGet("Playlist/{id}")]
+        [HttpGet("Course/{name}")]
         [ResponseCache(Duration = 300)]
-        public ActionResult<Course> Playlist(string id)
+        public ActionResult<Course> Course(string name)
         {
-            var key = CacheKey + "/playlist/" + id;
+            var key = CacheKey + "/course/" + name;
 
             if (_cache.TryGetValue(key, out dynamic result))
             {
                 return result;
             }
 
-            var playlist = _audioService.GetPlaylist(id);
+            var course = _audioService.GetCourse(name);
 
-            _cache.Set(key, playlist, TimeSpan.FromDays(1));
+            _cache.Set(key, course, TimeSpan.FromDays(1));
 
-            return new ActionResult<Course>(playlist);
+            return new ActionResult<Course>(course);
         }
 
         [HttpGet("Lesson/{id}")]

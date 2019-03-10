@@ -8,10 +8,10 @@ class Home extends Component {
         playlists: []
     }
     componentDidMount = () => {
-        api.getPlaylists()
-            .then(playlists => {
+        api.getCourses()
+            .then(courses => {
                 this.setState(() => ({
-                    playlists: playlists
+                    playlists: courses
                 }))
             })
     }

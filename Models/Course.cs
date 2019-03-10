@@ -5,8 +5,8 @@ using Newtonsoft.Json;
 [JsonObject("course")]
 public class Course
 {
-    [JsonProperty("id")]
-    public string Id;
+    [JsonProperty("name")]
+    public string Name;
 
     [JsonProperty("title")]
     public string Title;

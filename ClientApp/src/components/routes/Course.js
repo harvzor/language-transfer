@@ -14,7 +14,7 @@ class Course extends Component {
     componentDidMount = () => {
         const id = this.props.match.params.playlistId
 
-        api.getPlaylist(id)
+        api.getCourse(id)
             .then(course => {
                 this.props.updateTitle(course.title)
 

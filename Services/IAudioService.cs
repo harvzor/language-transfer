@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 public interface IAudioService
 {
-    IEnumerable<Course> GetPlaylists();
+    IEnumerable<Course> GetCourses();
 
-    Course GetPlaylist(string id);
+    Course GetCourse(string name);
 
     byte[] GetLesson(string id);
 }

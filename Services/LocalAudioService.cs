@@ -37,15 +37,18 @@ namespace language_transfer.Services
                     {
                         var audioFilePaths = Directory.EnumerateFiles(env.ContentRootPath + "/ClientApp/public/" + course.Path);
 
-                        course.Id = course.Title
-                            .ToLower()
-                            .Replace(" ", "-");
+                        /*
+                            course.Id = course.Title
+                                .ToLower()
+                                .Replace(" ", "-");
+                        */
 
                         course.Lessons = audioFilePaths.Select(audioFilePath =>
                         {
                             return new Lesson
                             {
-                                Id = Path.GetFileNameWithoutExtension(audioFilePath),
+                                LessonId = Int32.Parse(Path.GetFileNameWithoutExtension(audioFilePath)),
+                                CourseName = course.Name,
                                 Title = "Lesson " + Path.GetFileNameWithoutExtension(audioFilePath),
                                 FileName = Path.GetFileName(audioFilePath),
                                 FileSize = new FileInfo(audioFilePath).Length
@@ -58,14 +61,14 @@ namespace language_transfer.Services
             }
         }
 
-        public IEnumerable<Course> GetPlaylists()
+        public IEnumerable<Course> GetCourses()
         {
             return Data.Courses;
         }
 
-        public Course GetPlaylist(string id)
+        public Course GetCourse(string name)
         {
-            return Data.Courses.FirstOrDefault(course => course.Id == id);
+            return Data.Courses.FirstOrDefault(course => course.Name == name);
         }
 
         public byte[] GetLesson(string id)

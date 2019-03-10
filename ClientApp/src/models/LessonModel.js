@@ -3,9 +3,14 @@ import storageService from '../services/StorageService'
 
 var Lesson = function(lesson) {
     /**
-     * ID of this lesson, unique to this course.
+     * ID of this lesson, unique only to this course.
      */
-    this.id = lesson.id || null
+    this.lessonId = lesson.lessonId || null
+
+    /**
+     * Unique course name this lesson belongs to.
+     */
+    this.courseName = lesson.courseName || null
 
     /**
      * Printable title.
@@ -94,7 +99,7 @@ var Lesson = function(lesson) {
     this.getSaved = async() => {
         try
         {
-            return await storageService.lessons.get(this.id)
+            return await storageService.lessons.get(this.lessonId, this.courseName)
         }
         catch
         {
