@@ -39,7 +39,7 @@ class TrackItem extends Component {
         if (this.state.isDownloaded)
             return "Delete download"
 
-        return "Download"
+        return `Download (${this.props.lesson.getPrintableFileSize()})`
     }
     completionHandleClick = async(event) => {
         event.preventDefault()

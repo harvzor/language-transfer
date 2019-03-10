@@ -11,4 +11,7 @@ public class Lesson
 
     [JsonProperty("fileName")]
     public string FileName;
+
+    [JsonProperty("fileSize")]
+    public long FileSize;
 }

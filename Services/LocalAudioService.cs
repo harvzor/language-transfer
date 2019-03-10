@@ -47,7 +47,8 @@ namespace language_transfer.Services
                             {
                                 Id = Path.GetFileNameWithoutExtension(audioFilePath),
                                 Title = "Lesson " + Path.GetFileNameWithoutExtension(audioFilePath),
-                                FileName = Path.GetFileName(audioFilePath)
+                                FileName = Path.GetFileName(audioFilePath),
+                                FileSize = new FileInfo(audioFilePath).Length
                             };
                         });
                     });
