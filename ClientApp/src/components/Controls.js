@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import AudioUi from './AudioUi'
 import storage from '../services/StorageService'
+import Audio from '../services/AudioService'
 
 class Controls extends Component {
     state = {
@@ -9,12 +9,12 @@ class Controls extends Component {
     handleBackClick = (event) => {
         event.preventDefault()
 
-        AudioUi.audio.addSeconds(-5)
+        Audio.addSeconds(-5)
     }
     handleToggleClick = (event) => {
         event.preventDefault()
 
-        AudioUi.audio.toggle()
+        Audio.toggle()
 
         if (storage.settings.get() !== null && storage.settings.get().vibrate)
             window.navigator.vibrate(200)
@@ -22,10 +22,10 @@ class Controls extends Component {
     handleForwardClick = (event) => {
         event.preventDefault()
 
-        AudioUi.audio.addSeconds(5)
+        Audio.addSeconds(5)
     }
     componentDidMount = () => {
-        AudioUi.audio.stateChangeFunctions.push((state) => {
+        Audio.stateChangeFunctions.push((state) => {
             if (!state.hasStarted) {
                 this.setState(() => ({
                     toggleText: 'Play'

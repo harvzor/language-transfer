@@ -1,23 +1,17 @@
 import React, { Component } from 'react'
-import AudioUi from './AudioUi'
 import Audio from '../services/AudioService'
 import Moment from 'react-moment'
 
 class AudioElement extends Component {
-    constructor(props) {
-        super(props)
-        this.audio = React.createRef()
-    }
-    audio = null
     state = {
         progress: 0,
         position: 0,
         duration: 0
     }
     componentDidMount = () => {
-        AudioUi.audio = new Audio()
-
-        AudioUi.audio.stateChangeFunctions.push((state) => {
+        // This causes an error when the user navigates to a view which does not contain this component, and
+        // audio has already been started.
+        Audio.stateChangeFunctions.push((state) => {
             this.setState({
                 progress: state.progress,
                 position: state.position,
@@ -30,7 +24,7 @@ class AudioElement extends Component {
         let clickPosition = e.nativeEvent.offsetX
         let percentage = clickPosition / width * 100
 
-        AudioUi.audio.seekToPercent(percentage)
+        Audio.seekToPercent(percentage)
     }
     render() {
         return (

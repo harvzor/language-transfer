@@ -177,4 +177,6 @@ var Audio = function () {
     this.stateChangeFunctions = []
 }
 
-export default Audio
+var audio = new Audio()
+
+export default audio

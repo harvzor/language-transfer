@@ -3,7 +3,8 @@ import TrackList from '../TrackList'
 import AudioUi from '../AudioUi'
 import api from '../../services/ApiService'
 import Lesson from '../../models/LessonModel'
-import PieChart from 'react-minimal-pie-chart';
+import PieChart from 'react-minimal-pie-chart'
+import Audio from '../../services/AudioService'
 
 class Course extends Component {
     state = {
@@ -76,7 +77,7 @@ class Course extends Component {
             trackSelected: true
         }))
 
-        AudioUi.audio.changeTrack(lesson, this.state.course.path)
+        Audio.changeTrack(lesson, this.state.course.path)
     }
     updateCompletionVisualisation = (lesson) => {
         this.setState((prevState) => {
