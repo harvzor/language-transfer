@@ -50,6 +50,8 @@ class TrackItem extends Component {
         this.setState(() => ({
             isComplete: this.props.lesson.completed
         }))
+
+        this.props.updateCompletionVisualisation(this.props.lesson)
     }
     render() {
         return (

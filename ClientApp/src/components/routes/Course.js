@@ -3,6 +3,7 @@ import TrackList from '../TrackList'
 import AudioUi from '../AudioUi'
 import api from '../../services/ApiService'
 import Lesson from '../../models/LessonModel'
+import PieChart from 'react-minimal-pie-chart';
 
 class Course extends Component {
     state = {
@@ -77,12 +78,55 @@ class Course extends Component {
 
         AudioUi.audio.changeTrack(lesson, this.state.course.path)
     }
+    updateCompletionVisualisation = (lesson) => {
+        this.setState((prevState) => {
+            let index = prevState.course.lessons.findIndex(l => l.lessonId === lesson.lessonId)
+
+            prevState.course.lessons[index] = lesson
+
+            return prevState
+        })
+    }
+    calculateCompletionPercentage = () => {
+        return Math.floor(
+            this.state.course.lessons.filter(lesson => lesson.completed).length
+            / this.state.course.lessons.length
+            * 100
+        ) || 0
+    }
     render() {
         return (
             <div>
                 <section className="list tracks">
+                    <PieChart
+                        data={[
+                            {
+                                value: this.calculateCompletionPercentage(),
+                                color: 'red'
+                            },
+                            {
+                                value: 100 - this.calculateCompletionPercentage(),
+                                color: 'blue'
+                            }
+                        ]}
+                        lineWidth={20}
+                        label={({ data, dataIndex }) =>
+                            dataIndex === 0 ? Math.round(data[dataIndex].percentage) + '% complete' : ''
+                        }
+                        labelStyle={{
+                            fontSize: '10px',
+                            fontFamily: 'sans-serif'
+                        }}
+                        labelPosition={0}
+                        style={{margin: '30px auto', width: '50%' }}
+                    />
                     <p>Select a track to be played.</p>
-                    <TrackList lessons={this.state.course.lessons} trackSelected={this.trackSelectedEvent} downloadTrackEvent={this.downloadTrackEvent} />
+                    <TrackList
+                        lessons={this.state.course.lessons}
+                        trackSelected={this.trackSelectedEvent}
+                        downloadTrackEvent={this.downloadTrackEvent}
+                        updateCompletionVisualisation={this.updateCompletionVisualisation}
+                    />
                 </section>
                 <div className={"ui-container" + (this.state.trackSelected ? "" : " hidden")}>
                     <AudioUi />

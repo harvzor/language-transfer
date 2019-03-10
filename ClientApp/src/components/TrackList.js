@@ -20,6 +20,7 @@ class TrackList extends Component {
                     <TrackItem
                         selected={i === this.state.selected}
                         trackSelected={this.handleTrackClick}
+                        updateCompletionVisualisation={this.props.updateCompletionVisualisation}
                         lesson={lesson}
                         key={i}
                     />

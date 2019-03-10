@@ -22,8 +22,6 @@ var storage = function() {
         }
 
         let get = async(lessonId, courseName) => {
-            console.log(lessonId, courseName)
-
             let lesson = await dbService.get(lessonId, courseName)
 
             if (lesson === null)
@@ -33,8 +31,6 @@ var storage = function() {
         }
 
         let set = (lesson) => {
-            console.log(lesson)
-
             dbService.set(lesson)
         }
 
