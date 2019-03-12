@@ -18,7 +18,8 @@ class Home extends Component {
     render() {
         return (
             <section className="list">
-                <p>Select a course you want to start.</p>
+                <p>Learn a language using these free audio lessons.</p>
+                <p>Start by selecting language you want to learn.</p>
                 <CourseList playlists={this.state.playlists} />
             </section>
         )
