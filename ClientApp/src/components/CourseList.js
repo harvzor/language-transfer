@@ -4,8 +4,8 @@ import CourseItem from './CourseItem'
 const CourseList = (props) => {
     return (
         <ul>
-            {props.playlists.map((playlist, i) =>
-                <CourseItem playlist={playlist} key={i} />
+            {props.courses.map((course, i) =>
+                <CourseItem course={course} key={i} />
             )}
         </ul>
     )

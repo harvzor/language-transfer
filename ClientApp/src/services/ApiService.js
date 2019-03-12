@@ -4,7 +4,7 @@ var api = function() {
     /**
      * @private
      */
-    var get = (item, isJson) => {
+    var get = async(item, isJson) => {
         return new Promise((resolve, reject) => {
             fetch(baseUrl + item)
                 .then(resp => {

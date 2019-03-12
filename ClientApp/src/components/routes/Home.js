@@ -1,18 +1,28 @@
 import React, { Component } from 'react'
 import CourseList from '../CourseList'
 import api from '../../services/ApiService'
+import Course from '../../models/CourseModel';
 
 class Home extends Component {
     state = {
         settingsVisible: false,
-        playlists: []
+        courses: []
     }
     componentDidMount = () => {
         api.getCourses()
             .then(courses => {
-                this.setState(() => ({
-                    playlists: courses
-                }))
+                courses
+                    .map(course => new Course(course))
+                    .forEach(course => {
+                        course.getSavedLessons(() => {}, c => {
+                            this.setState(prevState => {
+                                prevState.courses.push(c)
+
+                                return prevState
+                            })
+                        })
+                    })
+
             })
     }
     render() {
@@ -20,7 +30,7 @@ class Home extends Component {
             <section className="list">
                 <p>Learn a language using these free audio lessons.</p>
                 <p>Start by selecting language you want to learn.</p>
-                <CourseList playlists={this.state.playlists} />
+                <CourseList courses={this.state.courses} />
             </section>
         )
     }

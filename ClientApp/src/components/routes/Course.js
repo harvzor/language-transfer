@@ -2,74 +2,29 @@ import React, { Component } from 'react'
 import TrackList from '../TrackList'
 import AudioUi from '../AudioUi'
 import api from '../../services/ApiService'
-import Lesson from '../../models/LessonModel'
+import CourseModel from '../../models/CourseModel'
 import PieChart from 'react-minimal-pie-chart'
 import Audio from '../../services/AudioService'
 
 class Course extends Component {
     state = {
         trackSelected: false,
-        course: {
-            lessons: []
-        }
+        course: new CourseModel()
     }
     componentDidMount = () => {
         const id = this.props.match.params.playlistId
 
         api.getCourse(id)
-            .then(course => {
+            .then(apiCourse => {
+                let course = new CourseModel(apiCourse)
+
                 this.props.updateTitle(course.title)
 
-                let lessons = course.lessons
-                    .map(lesson => new Lesson(lesson))
-
-                course.lessons = []
-
-                this.getSavedLessons(course, lessons, 0)
-
-                /*
-                    lessons
-                        .forEach(lesson => {
-                            lesson.getSaved()
-                                .then(lesson => {
-                                    course.lessons.push(lesson)
-
-                                    this.setState(() => ({
-                                        course: course
-                                    }))
-                                })
-                        })
-                */
-
-                /* This proves to be very slow when the audio data has been downloaded.
-                    Promise.all(
-                        course.lessons
-                            .map(lesson => lesson.getSaved())
-                    )
-                    .then(lessons => {
-                        course.lessons = lessons
-
-                        this.setState(() => ({
-                            course: course
-                        }))
-                    })
-                */
-            })
-    }
-    getSavedLessons = (course, lessons, index) => {
-        if (lessons.length === index) {
-            return
-        }
-
-        lessons[index].getSaved()
-            .then(lesson => {
-                course.lessons.push(lesson)
-
-                this.setState(() => ({
-                    course: course
-                }))
-
-                this.getSavedLessons(course, lessons, index + 1)
+                course.getSavedLessons(c => {
+                    this.setState(() => ({
+                        course: c
+                    }))
+                })
             })
     }
     trackSelectedEvent = (lesson) => {
@@ -88,13 +43,6 @@ class Course extends Component {
             return prevState
         })
     }
-    calculateCompletionPercentage = () => {
-        return Math.floor(
-            this.state.course.lessons.filter(lesson => lesson.completed).length
-            / this.state.course.lessons.length
-            * 100
-        ) || 0
-    }
     render() {
         return (
             <div>
@@ -102,11 +50,11 @@ class Course extends Component {
                     <PieChart
                         data={[
                             {
-                                value: this.calculateCompletionPercentage(),
+                                value: this.state.course.calculateCompletionPercentage(),
                                 color: 'red'
                             },
                             {
-                                value: 100 - this.calculateCompletionPercentage(),
+                                value: 100 - this.state.course.calculateCompletionPercentage(),
                                 color: 'blue'
                             }
                         ]}
