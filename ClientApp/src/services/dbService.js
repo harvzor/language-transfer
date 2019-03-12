@@ -11,7 +11,7 @@ var dbService = function() {
         .stores({
             // Audio is deliberately not indexed.
             // https://dexie.org/docs/Version/Version.stores()#warning
-            lessons: '++id, [lessonId+courseName]'
+            lessons: '[lessonId+courseName]'
         })
 
     let get = async(lessonId, courseName) => {
