@@ -33,13 +33,17 @@ class TrackItem extends Component {
         }))
     }
     downloadText = () => {
+        let fileSize = () => {
+            return ` (${this.props.lesson.getPrintableFileSize()})`
+        }
+
         if (this.state.isDownloading)
             return "Downloading..."
 
         if (this.state.isDownloaded)
-            return "Delete download"
+            return "Delete download" + fileSize()
 
-        return `Download (${this.props.lesson.getPrintableFileSize()})`
+        return `Download` + fileSize()
     }
     completionHandleClick = async(event) => {
         event.preventDefault()
