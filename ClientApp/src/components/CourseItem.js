@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const CourseItem = (props) => {
     return (
-        <li>
+        <li className="li-flex">
             <Link to={'/course/' + props.course.name}>
                 {props.course.title}
             </Link>
@@ -12,11 +12,11 @@ const CourseItem = (props) => {
                 data={[
                     {
                         value: props.course.calculateCompletionPercentage(),
-                        color: 'red'
+                        color: 'black'
                     },
                     {
                         value: 100 - props.course.calculateCompletionPercentage(),
-                        color: 'blue'
+                        color: 'grey'
                     }
                 ]}
                 lineWidth={20}
@@ -24,11 +24,18 @@ const CourseItem = (props) => {
                     dataIndex === 0 ? Math.round(data[dataIndex].percentage) + '%' : ''
                 }
                 labelStyle={{
-                    fontSize: '50px',
-                    fontFamily: 'sans-serif'
+                    fontSize: '40px',
+                    fontFamily: 'sans-serif',
+                    paddingTop: '5px',
+                    transform: 'translateY(12.5px)'
                 }}
                 labelPosition={0}
-                style={{ float: 'right', padding: '5px', width: '50px' }}
+                style={{
+                    float: 'right',
+                    padding: '2px',
+                    width: '50px',
+                    pointerEvents: 'none'
+                }}
             />
         </li>
     )

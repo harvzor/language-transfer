@@ -187,6 +187,15 @@ h1.home {
     overflow:hidden;
 }
 
+.list ul li.li-flex {
+    display:flex;
+    align-items:center;
+}
+
+.list ul li.li-flex a {
+    flex-grow:1;
+}
+
 .list ul li:last-child {
     margin-bottom:0;
 }

@@ -43,33 +43,40 @@ class Course extends Component {
             return prevState
         })
     }
+    renderPieChart() {
+        if (this.state.course.calculateCompletionPercentage() === 0) {
+            return;
+        }
+
+        return <PieChart
+            data={[
+                {
+                    value: this.state.course.calculateCompletionPercentage(),
+                    color: 'black'
+                },
+                {
+                    value: 100 - this.state.course.calculateCompletionPercentage(),
+                    color: 'grey'
+                }
+            ]}
+            lineWidth={20}
+            label={({ data, dataIndex }) =>
+                dataIndex === 0 ? Math.round(data[dataIndex].percentage) + '% complete' : ''
+            }
+            labelStyle={{
+                fontSize: '10px',
+                fontFamily: 'sans-serif'
+            }}
+            labelPosition={0}
+            style={{margin: '30px auto', width: '50%', maxWidth: '300px' }}
+        />
+    }
     render() {
         return (
             <div>
                 <section className="list tracks">
-                    <PieChart
-                        data={[
-                            {
-                                value: this.state.course.calculateCompletionPercentage(),
-                                color: 'red'
-                            },
-                            {
-                                value: 100 - this.state.course.calculateCompletionPercentage(),
-                                color: 'blue'
-                            }
-                        ]}
-                        lineWidth={20}
-                        label={({ data, dataIndex }) =>
-                            dataIndex === 0 ? Math.round(data[dataIndex].percentage) + '% complete' : ''
-                        }
-                        labelStyle={{
-                            fontSize: '10px',
-                            fontFamily: 'sans-serif'
-                        }}
-                        labelPosition={0}
-                        style={{margin: '30px auto', width: '50%' }}
-                    />
                     <p>Select a track to be played.</p>
+                    { this.renderPieChart() }
                     <TrackList
                         lessons={this.state.course.lessons}
                         trackSelected={this.trackSelectedEvent}
