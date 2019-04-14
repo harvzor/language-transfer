@@ -51,7 +51,7 @@ namespace language_transfer.Services
                                 CourseName = course.Name,
                                 Title = "Lesson " + Path.GetFileNameWithoutExtension(audioFilePath),
                                 FileName = Path.GetFileName(audioFilePath),
-                                FileSize = new FileInfo(audioFilePath).Length
+                                FileSize = Convert.ToBase64String(File.ReadAllBytes(audioFilePath)).Length
                             };
                         });
                     });

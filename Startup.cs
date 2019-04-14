@@ -27,7 +27,7 @@ namespace language_transfer
 
             // GZIP
             //services.AddResponseCompression();
-            
+
             services.AddMemoryCache();
 
             //services.AddScoped<IAudioService, SoundCloudService>();
@@ -53,7 +53,7 @@ namespace language_transfer
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
