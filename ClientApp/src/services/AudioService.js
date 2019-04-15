@@ -104,6 +104,7 @@ var Audio = function () {
 
         track.on('end', () => {
             this.hasEnded = true
+            this.hasStarted = false
 
             stateChange()
 
