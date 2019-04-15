@@ -190,10 +190,15 @@ h1.home {
 .list ul li.li-flex {
     display:flex;
     align-items:center;
+    padding:3px 0;
 }
 
-.list ul li.li-flex a {
+.list ul li.li-flex a:first-child {
     flex-grow:1;
+}
+
+.list ul li.li-flex a:first-child {
+    padding:0 10px;
 }
 
 .list ul li:last-child {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import CheckBox from "react-animated-checkbox"
 
 class TrackItem extends Component {
     state = {
@@ -59,10 +60,20 @@ class TrackItem extends Component {
     }
     render() {
         return (
-            <li className={this.props.selected ? "selected" : ""}>
-                <a href={'#' + this.props.lesson.id} data-id={this.props.lesson.id} onClick={this.handleClick}>{this.props.lesson.title}</a>
-                <a href={'#' + this.props.lesson.id} data-id={this.props.lesson.id} onClick={this.downloadHandleClick}>{this.downloadText()}</a>
-                <a href={'#' + this.props.lesson.id} data-id={this.props.lesson.id} onClick={this.completionHandleClick}>Mark {this.state.isComplete ? "uncomplete" : "complete"}</a>
+            <li className={ "li-flex" + (this.props.selected ? " selected" : "") }>
+                <a href={'#' + this.props.lesson.lessonId} onClick={this.handleClick}>{this.props.lesson.title}</a>
+                <a href={'#' + this.props.lesson.lessonId} onClick={this.downloadHandleClick}>{this.downloadText()}</a>
+                <a href={'#' + this.props.lesson.lessonId} onClick={this.completionHandleClick}>
+                    <CheckBox
+                        checked={this.state.isComplete}
+                        checkBoxStyle={{
+                            checkedColor: "#34b93d",
+                            size: 20,
+                            unCheckedColor: "#b8b8b8"
+                        }}
+                        duration={400}
+                    />
+                </a>
             </li>
         )
     }

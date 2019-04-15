@@ -24,6 +24,16 @@ var Audio = function () {
     this.position = 0
 
     /**
+     * If the track has started.
+    */
+    this.hasStarted = false
+
+    /**
+     * If the track has ended.
+    */
+    this.hasEnded = false
+
+    /**
      * Run the state change functions.
      * @private
      */
@@ -35,8 +45,9 @@ var Audio = function () {
                     duration: this.duration,
                     position: this.position,
                     hasStarted: this.hasStarted,
+                    hasEnded: this.hasEnded,
                     isPaused: this.isPaused,
-                    isLoading: this.isLoading
+                    isLoading: this.isLoading,
                 })
             )
     }
@@ -88,6 +99,11 @@ var Audio = function () {
         })
 
         track.on('stop', () => {
+            stateChange()
+        })
+
+        track.on('end', () => {
+            this.hasEnded = true
 
             stateChange()
         })

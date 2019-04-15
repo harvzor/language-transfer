@@ -33,6 +33,7 @@ const CourseItem = (props) => {
                 style={{
                     float: 'right',
                     padding: '2px',
+                    marginRight: '3px',
                     width: '50px',
                     pointerEvents: 'none'
                 }}
