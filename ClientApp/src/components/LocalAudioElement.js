@@ -3,7 +3,11 @@ import Audio from '../services/AudioService'
 import Moment from 'react-moment'
 
 class AudioElement extends Component {
-    audio = null
+    constructor(props) {
+        super(props)
+
+        this.audio = React.createRef()
+    }
     state = {
         progress: 0,
         position: 0,
