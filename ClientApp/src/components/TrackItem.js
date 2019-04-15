@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import CheckBox from "react-animated-checkbox"
+import Audio from '../services/AudioService'
 
 class TrackItem extends Component {
     state = {
@@ -12,6 +13,14 @@ class TrackItem extends Component {
             isComplete: this.props.lesson.completed,
             isDownloaded: this.props.lesson.downloaded
         }))
+
+        Audio.stateChangeFunctions.push((state) => {
+            if (state.hasEnded && Audio.trackId === this.props.lesson.lessonId) {
+                this.props.lesson.completed = true
+
+                this.completionChangeEvent()
+            }
+        })
     }
     handleClick = (event) => {
         event.preventDefault()
@@ -46,10 +55,8 @@ class TrackItem extends Component {
 
         return `Download` + fileSize()
     }
-    completionHandleClick = async(event) => {
-        event.preventDefault()
+    completionChangeEvent = async() => {
 
-        await this.props.lesson.toggleComplete()
         await this.props.lesson.save()
 
         this.setState(() => ({
@@ -57,6 +64,13 @@ class TrackItem extends Component {
         }))
 
         this.props.updateCompletionVisualisation(this.props.lesson)
+    }
+    completionHandleClick = (event) => {
+        event.preventDefault()
+
+        this.props.lesson.toggleComplete()
+
+        this.completionChangeEvent()
     }
     render() {
         return (

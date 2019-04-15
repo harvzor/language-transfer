@@ -59,7 +59,7 @@ var Audio = function () {
      * @private
      */
     let progressChange = () => {
-        if (this.isPaused || this.isLoading)
+        if (this.isPaused || this.isLoading || this.hasEnded)
             return
 
         this.position = track.seek()
@@ -106,6 +106,8 @@ var Audio = function () {
             this.hasEnded = true
 
             stateChange()
+
+            this.hasEnded = false
         })
     }
 
@@ -172,7 +174,7 @@ var Audio = function () {
             track.unload()
         }
 
-        this.trackId = lesson.id
+        this.trackId = lesson.lessonId
 
         this.hasStarted = false
         this.isLoading = true
