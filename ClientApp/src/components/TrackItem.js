@@ -81,7 +81,7 @@ class TrackItem extends Component {
                     <CheckBox
                         checked={this.state.isComplete}
                         checkBoxStyle={{
-                            checkedColor: "#34b93d",
+                            checkedColor: this.props.selected ? "white" : "#34b93d",
                             size: 20,
                             unCheckedColor: "#b8b8b8"
                         }}

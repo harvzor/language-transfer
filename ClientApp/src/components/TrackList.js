@@ -8,7 +8,7 @@ class TrackList extends Component {
     }
     handleTrackClick = (lesson) => {
         this.setState(() => ({
-            selected: lesson.id
+            selected: lesson.lessonId - 1
         }))
 
         this.props.trackSelected(lesson)
