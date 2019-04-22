@@ -1,15 +1,34 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom'
+import { Router, Link, Route } from 'react-router-dom'
 import './App.css'
 import Home from './components/routes/Home'
 import Course from './components/routes/Course'
 import FullscreenButton from './components/FullscreenButton'
 import Settings from './components/Settings'
+import createBrowserHistory from 'history/createBrowserHistory';
+import ReactGA from 'react-ga';
 
 class App extends Component {
+    history = createBrowserHistory()
     state = {
         settingsVisible: false,
         title: null
+    }
+    componentDidMount = () => {
+        this.setupAnalytics()
+    }
+    setupAnalytics = () => {
+        if (window.location.hostname === 'localhost') {
+            return
+        }
+
+        ReactGA.initialize('UA-138693497-01')
+
+        ReactGA.pageview(window.location.pathname + window.location.search)
+
+        this.history.listen(location => {
+            ReactGA.pageview(location.pathname + location.search)
+        })
     }
     toggleSettingsVisible = (event) => {
         event.preventDefault()
@@ -25,7 +44,7 @@ class App extends Component {
     }
     render() {
         return (
-            <Router>
+            <Router history={this.history}>
                 <div>
                     <section className="bar bar--thin navigation borders-bottom">
                         <Route exact path="/" render={() => (
