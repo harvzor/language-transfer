@@ -74,10 +74,10 @@ class TrackItem extends Component {
     }
     render() {
         return (
-            <li className={ "li-flex" + (this.props.selected ? " selected" : "") }>
+            <li className={ "borders li-flex" + (this.props.selected ? " selected" : "") }>
                 <a href={'#' + this.props.lesson.lessonId} onClick={this.handleClick}>{this.props.lesson.title}</a>
-                <a href={'#' + this.props.lesson.lessonId} onClick={this.downloadHandleClick}>{this.downloadText()}</a>
-                <a href={'#' + this.props.lesson.lessonId} onClick={this.completionHandleClick}>
+                <a href={'#' + this.props.lesson.lessonId} className="borders-left" onClick={this.downloadHandleClick}>{this.downloadText()}</a>
+                <a href={'#' + this.props.lesson.lessonId} className="borders-left" onClick={this.completionHandleClick}>
                     <CheckBox
                         checked={this.state.isComplete}
                         checkBoxStyle={{

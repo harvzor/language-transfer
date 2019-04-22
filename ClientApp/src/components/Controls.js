@@ -54,9 +54,9 @@ class Controls extends Component {
     render() {
         return (
             <section className="bar controls">
-                <button className="controls-skip" onClick={this.handleBackClick}>-5s</button>
-                <button onClick={this.handleToggleClick}>{this.state.toggleText}</button>
-                <button className="controls-skip" onClick={this.handleForwardClick}>+5s</button>
+                <button className="controls-skip borders" onClick={this.handleBackClick}>-5s</button>
+                <button className="borders" onClick={this.handleToggleClick}>{this.state.toggleText}</button>
+                <button className="controls-skip borders" onClick={this.handleForwardClick}>+5s</button>
             </section>
         )
     }

@@ -27,13 +27,13 @@ class App extends Component {
         return (
             <Router>
                 <div>
-                    <section className="bar bar--thin navigation">
+                    <section className="bar bar--thin navigation borders-bottom">
                         <Route exact path="/" render={() => (
                             <h1 className="home">Language Transfer</h1>
                         )} />
                         <Route path="/course/:playlistId" render={() => (
                             <div>
-                                <Link to={'/'} className="navigation-back">
+                                <Link to={'/'} className="navigation-back borders-right">
                                     &lt;
                                 </Link>
                                 <h1>Language Transfer</h1>

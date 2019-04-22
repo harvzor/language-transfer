@@ -24,6 +24,11 @@ p {
     margin:0;
 }
 
+button {
+    background-color:transparent;
+    border:1px solid grey;
+}
+
 .hidden {
     display:none;
 }
@@ -31,6 +36,106 @@ p {
 #app {
     /* Necessary because fullscreen for some reason changes the background color to black?? */
     background-color:white;
+}
+
+.borders {
+    position:relative;
+    border:1px solid grey;
+}
+
+.borders:before, .borders:after {
+    content:"";
+    position:absolute;
+    top:1px;
+    bottom:1px;
+    left:-4px; /* margin + border */
+    right:-4px; /* margin + border */
+    display:block;
+    border:1px solid grey;
+    pointer-events:none;
+}
+
+.borders:before {
+    transform:rotate(1deg);
+}
+
+.borders:after {
+    transform:rotate(-.7deg);
+}
+
+.borders-left {
+    position:relative;
+    border-left:1px solid grey;
+}
+
+.borders-left:before, .borders-left:after {
+    content:"";
+    position:absolute;
+    top:1px;
+    bottom:1px;
+    left:-4px; /* margin + border */
+    right:-4px; /* margin + border */
+    display:block;
+    border-left:1px solid grey;
+    pointer-events:none;
+}
+
+.borders-left:before {
+    transform:rotate(1deg);
+}
+
+.borders-left:after {
+    transform:rotate(-.7deg);
+}
+
+.borders-right {
+    position:relative;
+    border-right:1px solid grey;
+}
+
+.borders-right:before, .borders-right:after {
+    content:"";
+    position:absolute;
+    top:1px;
+    bottom:1px;
+    left:-4px; /* margin + border */
+    right:-4px; /* margin + border */
+    display:block;
+    border-right:1px solid grey;
+    pointer-events:none;
+}
+
+.borders-right:before {
+    transform:rotate(1deg);
+}
+
+.borders-right:after {
+    transform:rotate(-.7deg);
+}
+
+.borders-bottom {
+    position:relative;
+    border-bottom:1px solid grey;
+}
+
+.borders-bottom:before, .borders-bottom:after {
+    content:"";
+    position:absolute;
+    top:1px;
+    bottom:1px;
+    left:-4px; /* margin + border */
+    right:-4px; /* margin + border */
+    display:block;
+    border-bottom:1px solid grey;
+    pointer-events:none;
+}
+
+.borders-bottom:before {
+    transform:rotate(1deg);
+}
+
+.borders-bottom:after {
+    transform:rotate(-.7deg);
 }
 
 .navigation {
@@ -51,7 +156,6 @@ h1.home {
     width:50px;
     padding:10px;
     margin-right:10px;
-    border-right:1px solid black;
     font-size:32px;
     text-decoration:none;
     color:black;
@@ -140,17 +244,20 @@ h1.home {
 }
 
 .controls {
+    padding:10px 0;
     font-size:0;
 }
 
 .controls button {
     float:left;
     height:100%;
-    width:60%;
+    width:44%;
+    margin:0 2%;
+    border:1px solid grey;
 }
 
 .controls .controls-skip {
-    width:20%;
+    width:22%;
 }
 
 .list {
@@ -181,23 +288,21 @@ h1.home {
 
 .list ul li {
     position:relative;
-    border:1px solid black;
     margin:10px 0;
-    overflow:hidden;
 }
 
 .list ul li.li-flex {
     display:flex;
     align-items:center;
-    padding:3px 0;
+    padding:10px 0;
 }
 
 .list ul li.li-flex a:first-child {
     flex-grow:1;
 }
 
-.list ul li.li-flex a:first-child {
-    padding:0 10px;
+.list ul li.li-flex a:last-child {
+    height:38px;
 }
 
 .list ul li:last-child {
@@ -205,16 +310,9 @@ h1.home {
 }
 
 .list ul li.selected {
-    background-color:black;
 }
 
 .list ul li.selected a {
-    color:white;
-}
-
-.list ul li.selected a + a {
-    color:white;
-    border-color:white;
 }
 
 .list ul li a {
@@ -227,7 +325,6 @@ h1.home {
 
 .list ul li a + a {
     float:right;
-    border-left:1px solid black;
 }
 
 label {

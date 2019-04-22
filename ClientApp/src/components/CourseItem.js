@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 const CourseItem = (props) => {
     return (
-        <li className="li-flex">
+        <li className="li-flex borders">
             <Link to={'/course/' + props.course.name}>
                 {props.course.title}
             </Link>
