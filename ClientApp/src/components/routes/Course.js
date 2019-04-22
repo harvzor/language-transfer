@@ -74,7 +74,7 @@ class Course extends Component {
     render() {
         return (
             <div>
-                <section className="list tracks">
+                <section className={"list tracks " + (this.state.trackSelected ? " track-selected" : "")}>
                     <p>Select a track to be played.</p>
                     { this.renderPieChart() }
                     <TrackList

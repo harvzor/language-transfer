@@ -161,9 +161,8 @@ h1.home {
     z-index:-1;
 }
 
-.tracks {
+.tracks.track-selected {
     padding-bottom:215px;
-    /*padding-bottom:270px;*/
 }
 
 .tracks ul li {
