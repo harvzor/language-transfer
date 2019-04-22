@@ -8,6 +8,10 @@ html, body {
     font-family:sans-serif;
 }
 
+body {
+    padding-top:55px;
+}
+
 h1 {
     font-size:18px;
     margin:0;
@@ -191,14 +195,13 @@ h1.home {
     position:fixed;
     height:100%;
     width:100%;
-    padding:50px 10px 10px 10px;
+    padding:0 10px;
     background-color:white;
     z-index:1;
 }
 
 .bar {
     height:75px;
-    border-bottom:1px solid black;
     background-color:white;
 }
 
@@ -207,7 +210,7 @@ h1.home {
 }
 
 .bar--thin {
-    height:50px;
+    height:55px;
 }
 
 .ui-container {
@@ -215,7 +218,7 @@ h1.home {
     bottom:0;
     left:0;
     width:100%;
-    border-top:1px solid black;
+    border-top:1px solid grey;
 }
 
 .hint {
@@ -226,6 +229,7 @@ h1.home {
 .audio {
     position:relative;
     height:120px;
+    border-bottom:1px solid grey;
 }
 
 /* Todo: centre unknown better */
@@ -263,7 +267,6 @@ h1.home {
 .list {
     position:absolute;
     width:100%;
-    margin-top:50px;
     padding:10px;
     z-index:-1;
 }
