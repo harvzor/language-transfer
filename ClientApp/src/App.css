@@ -312,10 +312,8 @@ h1.home {
     margin-bottom:0;
 }
 
-.list ul li.selected {
-}
-
-.list ul li.selected a {
+.list ul li.selected a:first-child {
+    font-weight:bold;
 }
 
 .list ul li a {
