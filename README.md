@@ -33,8 +33,13 @@ This web app aims to solve these issues:
 
 ## Developing
 
-- Run `dotnet watch run`
-- Connect to https://localhost:5001
+- run `dotnet watch run`
+- connect to https://localhost:5001
+
+# Releasing
+
+- run `dotnet publish -c Release`
+- go to `/bin/Release/netcoreapp2.1/publish/` and copy the files onto the server
 
 ## Audio files
 
