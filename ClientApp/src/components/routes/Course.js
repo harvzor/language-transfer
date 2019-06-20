@@ -32,7 +32,7 @@ class Course extends Component {
             trackSelected: true
         }))
 
-        Audio.changeTrack(lesson, this.state.course.path)
+        Audio.changeTrack(lesson)
     }
     updateCompletionVisualisation = (lesson) => {
         this.setState((prevState) => {

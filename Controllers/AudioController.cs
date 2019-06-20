@@ -58,18 +58,18 @@ namespace language_transfer.Controllers
             return new ActionResult<Course>(course);
         }
 
-        [HttpGet("Lesson/{id}")]
+        [HttpGet("Course/{courseName}/Lesson/{id}")]
         [ResponseCache(Duration = 300)]
-        public ActionResult<string> Lesson(string id)
+        public ActionResult<string> Lesson(string courseName, string id)
         {
-            var key = CacheKey + "/lesson/" + id;
+            var key = CacheKey + $"/course/{courseName}/lesson/" + id;
 
             if (_cache.TryGetValue(key, out dynamic result))
             {
                 return result;
             }
 
-            var lesson = "data:audio/webm;base64," + Convert.ToBase64String(_audioService.GetLesson(id));
+            var lesson = "data:audio/webm;base64," + Convert.ToBase64String(_audioService.GetLesson(courseName, id));
 
             _cache.Set(key, lesson, TimeSpan.FromDays(1));
 

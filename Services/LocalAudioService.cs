@@ -28,6 +28,10 @@ namespace language_transfer.Services
             this.Configuration = configuration.Get<Configuration>();
         }
 
+        private string ClientAppPublicPath => HostingEnvironment.IsProduction()
+            ? "/ClientApp/build/"
+            : "/ClientApp/public/";
+
         private Data _data;
         private Data Data
         {
@@ -39,13 +43,7 @@ namespace language_transfer.Services
 
                     _data.Courses.ToList().ForEach(course =>
                     {
-                        var audioDir = HostingEnvironment.ContentRootPath +
-                            (
-                                HostingEnvironment.IsProduction()
-                                    ? "/ClientApp/build/"
-                                    : "/ClientApp/public/"
-                            )
-                            + course.Path;
+                        var audioDir = HostingEnvironment.ContentRootPath + ClientAppPublicPath + course.Path;
 
                         var audioFilePaths = Directory.EnumerateFiles(audioDir);
 
@@ -83,10 +81,10 @@ namespace language_transfer.Services
             return Data.Courses.FirstOrDefault(course => course.Name == name);
         }
 
-        public byte[] GetLesson(string id)
+        public byte[] GetLesson(string courseName, string id)
         {
             // TODO: fix path
-            return File.ReadAllBytes(HostingEnvironment.ContentRootPath + "/ClientApp/public/audio/german/" + id);
+            return File.ReadAllBytes(HostingEnvironment.ContentRootPath + ClientAppPublicPath  + $"/audio/{courseName}/" + id);
         }
     }
 }

@@ -8,6 +8,6 @@ namespace language_transfer
 
         Course GetCourse(string name);
 
-        byte[] GetLesson(string id);
+        byte[] GetLesson(string courseName, string id);
     }
 }

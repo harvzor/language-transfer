@@ -161,7 +161,7 @@ var Audio = function () {
      * @param {object} lesson The lesson which should be played.
      * @param {string} path Path to the folder which the audio is stored.
      */
-    this.changeTrack = (lesson, path) => {
+    this.changeTrack = (lesson) => {
         if (track !== null) {
             // These values cannot be put in the on stop event as the on stop event doesn't execute fast enough.
             this.isPaused = null
@@ -183,7 +183,7 @@ var Audio = function () {
         track = new Howl({
             src: lesson.downloaded
                 ? lesson.audio
-                : path + lesson.fileName
+                : `/audio/${lesson.courseName}/${lesson.fileName}`
         })
 
         setupEvents()

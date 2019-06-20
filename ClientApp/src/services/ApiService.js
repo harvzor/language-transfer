@@ -30,15 +30,14 @@ var api = function() {
         return get('course/' + id, true)
     }
 
-    var getLesson = (id) => {
-        return get('lesson/' + id, false)
-    }
+    // var getLesson = (courseName, id) => {
+    //     return get('course/' + courseName + '/lesson/' + id, false)
+    // }
 
-    var getLessonAudio = (audioPath) => {
+    var getLessonAudio = (courseName, id) => {
         return new Promise((resolve, reject) => {
-            fetch(audioPath)
+            fetch(`${baseUrl}course/${courseName}/lesson/${id}`)
                 .then(resp => {
-                    //return resp.blob()
                     return resp.text()
                 })
                 .then(data => {
@@ -53,7 +52,7 @@ var api = function() {
     return {
         getCourses: getCourses,
         getCourse: getCourse,
-        getLesson: getLesson,
+        // getLesson: getLesson,
         getLessonAudio: getLessonAudio
     }
 }()
