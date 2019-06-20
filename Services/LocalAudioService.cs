@@ -39,7 +39,15 @@ namespace language_transfer.Services
 
                     _data.Courses.ToList().ForEach(course =>
                     {
-                        var audioFilePaths = Directory.EnumerateFiles(HostingEnvironment.ContentRootPath + "/ClientApp/public/" + course.Path);
+                        var audioDir = HostingEnvironment.ContentRootPath +
+                            (
+                                HostingEnvironment.IsProduction()
+                                    ? "/ClientApp/build/"
+                                    : "/ClientApp/public/"
+                            )
+                            + course.Path;
+
+                        var audioFilePaths = Directory.EnumerateFiles(audioDir);
 
                         /*
                             course.Id = course.Title
