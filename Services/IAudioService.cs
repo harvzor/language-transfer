@@ -1,11 +1,13 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
-public interface IAudioService
+namespace language_transfer
 {
-    IEnumerable<Course> GetCourses();
+    public interface IAudioService
+    {
+        IEnumerable<Course> GetCourses();
 
-    Course GetCourse(string name);
+        Course GetCourse(string name);
 
-    byte[] GetLesson(string id);
+        byte[] GetLesson(string id);
+    }
 }

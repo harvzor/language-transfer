@@ -2,24 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace language_transfer.Services
 {
+    /// <summary>
+    /// Use audio from the local file system.
+    /// </summary>
     public class LocalAudioService : IAudioService
     {
-        private readonly IHostingEnvironment env;
+        private readonly IHostingEnvironment HostingEnvironment;
+        private readonly Configuration Configuration;
 
-        public LocalAudioService(IHostingEnvironment env)
+        public LocalAudioService(IHostingEnvironment env, IConfiguration configuration)
         {
             if (env == null)
                 throw new ArgumentNullException(nameof(env));
 
-            this.env = env;
+            this.HostingEnvironment = env;
+
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
+
+            this.Configuration = configuration.Get<Configuration>();
         }
 
         private Data _data;
@@ -29,13 +35,11 @@ namespace language_transfer.Services
             {
                 if (_data == null)
                 {
-                    var text = File.ReadAllText(env.ContentRootPath + "/data.json", Encoding.UTF8);
-
-                    _data = JsonConvert.DeserializeObject<Data>(text);
+                    _data = Configuration.Data;
 
                     _data.Courses.ToList().ForEach(course =>
                     {
-                        var audioFilePaths = Directory.EnumerateFiles(env.ContentRootPath + "/ClientApp/public/" + course.Path);
+                        var audioFilePaths = Directory.EnumerateFiles(HostingEnvironment.ContentRootPath + "/ClientApp/public/" + course.Path);
 
                         /*
                             course.Id = course.Title
@@ -74,7 +78,7 @@ namespace language_transfer.Services
         public byte[] GetLesson(string id)
         {
             // TODO: fix path
-            return File.ReadAllBytes(env.ContentRootPath + "/ClientApp/public/audio/german/" + id);
+            return File.ReadAllBytes(HostingEnvironment.ContentRootPath + "/ClientApp/public/audio/german/" + id);
         }
     }
 }

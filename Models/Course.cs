@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-[JsonObject("course")]
-public class Course
+namespace language_transfer
 {
-    [JsonProperty("name")]
-    public string Name;
+    [JsonObject("course")]
+    public class Course
+    {
+        [JsonProperty("name")]
+        public string Name { get; set; }
 
-    [JsonProperty("title")]
-    public string Title;
+        [JsonProperty("title")]
+        public string Title { get; set; }
 
-    [JsonProperty("path")]
-    public string Path;
+        [JsonProperty("path")]
+        public string Path { get; set; }
 
-    [JsonProperty("lessons")]
-    public IEnumerable<Lesson> Lessons;
+        [JsonProperty("lessons")]
+        public IEnumerable<Lesson> Lessons { get; set; }
+    }
 }
