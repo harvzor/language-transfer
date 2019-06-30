@@ -18,6 +18,8 @@ class Course extends Component {
             .then(apiCourse => {
                 let course = new CourseModel(apiCourse)
 
+                course.getSaved()
+
                 this.props.updateTitle(course.title)
 
                 course.getSavedLessons(c => {
@@ -26,6 +28,63 @@ class Course extends Component {
                     }))
                 })
             })
+
+        this.trackTotalListeningTime()
+    }
+    renderFriendlyTime = (seconds) => {
+        seconds = parseInt(seconds, 10);
+
+        let days = Math.floor(seconds / (3600*24));
+
+        seconds  -= days*3600*24;
+
+        let hours   = Math.floor(seconds / 3600);
+
+        seconds  -= hours*3600;
+
+        let minutes = Math.floor(seconds / 60);
+
+        seconds  -= minutes*60;
+
+        return <span>
+            { days > 0 ? `${days} day` : '' }
+            { days > 1 ? `s` : '' }
+            { days > 0 ? ` ` : '' }
+            { hours > 0 ? `${hours} hour` : '' }
+            { hours > 1 ? `s` : '' }
+            { hours > 0 ? ` ` : '' }
+            { minutes > 0 ? `${minutes} minute` : '' }
+            { minutes > 1 ? `s` : '' }
+            { minutes > 0 ? ` ` : '' }
+            { (days > 0 || hours > 0 || minutes > 0) && seconds > 0 ? 'and ' : '' }
+            { seconds > 0 ? `${seconds } second` : '' }
+            { seconds > 1 ? `s` : '' }
+        </span>
+    }
+    trackTotalListeningTime = () => {
+        let oldSeconds = 0
+
+        Audio.stateChangeFunctions.push((state) => {
+            let currentSeconds = parseInt(state.position)
+            // This will probably always only be 1 second later.
+            let difference = currentSeconds - oldSeconds;
+
+            if (difference !== 1) {
+                // Probably the track has been skipped ahead or something.
+                if (difference !== 0) {
+                    oldSeconds = currentSeconds
+                }
+
+                // No change, don't update anything.
+                return
+            }
+
+            oldSeconds = currentSeconds
+
+            this.setState((prevState) => ({ ...prevState.course, totalListeningTime: prevState.course.totalListeningTime += difference }));
+
+            this.state.course.save()
+        })
     }
     trackSelectedEvent = (lesson) => {
         this.setState(() => ({
@@ -43,9 +102,20 @@ class Course extends Component {
             return prevState
         })
     }
+    renderProgress() {
+        if (this.state.course.calculateCompletionPercentage() === 0 && this.state.course.totalListeningTime === 0) {
+            return
+        }
+
+        return <div>
+            <h3>Your progress:</h3>
+            <p>Time spent listening: { this.renderFriendlyTime(this.state.course.totalListeningTime) }</p>
+            { this.renderPieChart() }
+        </div>
+    }
     renderPieChart() {
         if (this.state.course.calculateCompletionPercentage() === 0) {
-            return;
+            return
         }
 
         return <PieChart
@@ -75,8 +145,8 @@ class Course extends Component {
         return (
             <div>
                 <section className={"list tracks " + (this.state.trackSelected ? " track-selected" : "")}>
-                    <p>Select a track to be played.</p>
-                    { this.renderPieChart() }
+                    { this.renderProgress() }
+                    <h3>Select a track to be played:</h3>
                     <TrackList
                         lessons={this.state.course.lessons}
                         trackSelected={this.trackSelectedEvent}

@@ -62,6 +62,11 @@ var Audio = function () {
         if (this.isPaused || this.isLoading || this.hasEnded)
             return
 
+        // I'm sure this should speed up the app but it just gets slower and slower!
+        // if (this.position === track.seek()) {
+        //     requestAnimationFrame(progressChange)
+        // }
+
         this.position = track.seek()
         this.progress = this.position / this.duration * 100
 

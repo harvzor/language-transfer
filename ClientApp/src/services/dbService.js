@@ -1,7 +1,7 @@
 import Dexie from 'dexie'
 
 /**
- * Used for storing audio.
+ * Used for storing information in Indexed DB.
  */
 var dbService = function() {
     const db = new Dexie('language-transfer')
@@ -14,15 +14,15 @@ var dbService = function() {
             lessons: '[lessonId+courseName]'
         })
 
-    let get = async(lessonId, courseName) => {
+    let getLesson = async(lessonId, courseName) => {
         return db.lessons.get({ lessonId: lessonId, courseName: courseName })
     }
 
-    let getAll = async() => {
+    let getAllLessons = async() => {
         return db.lessons.toArray()
     }
 
-    let set = async(lesson) => {
+    let setLesson = async(lesson) => {
         return await db.lessons
             .put(lesson)
     }
@@ -35,9 +35,9 @@ var dbService = function() {
     */
 
     return {
-        get: get,
-        getAll: getAll,
-        set: set
+        getLesson: getLesson,
+        getAllLessons: getAllLessons,
+        setLesson: setLesson
     }
 }()
 

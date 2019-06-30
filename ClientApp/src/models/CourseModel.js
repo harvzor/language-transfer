@@ -1,4 +1,5 @@
 import Lesson from './LessonModel'
+import storageService from '../services/StorageService'
 
 /**
  * A course model.
@@ -16,6 +17,11 @@ var Course = function(course) {
         .map(lesson => new Lesson(lesson))
 
     /**
+     * Total seconds this user has listened to this course for.
+    */
+    this.totalListeningTime = 0
+
+    /**
      * Get the percentage of complete lessons.
      * @returns {number}
      */
@@ -25,6 +31,34 @@ var Course = function(course) {
             / this.lessons.length
             * 100
         ) || 0
+    }
+
+    /**
+     * Save relevent course information to storage.
+     * @returns {void}
+     */
+    this.save = async() => {
+        storageService.courses.set({
+            name: this.name,
+            totalListeningTime: this.totalListeningTime,
+        })
+    }
+
+    /**
+     * Get the latest saved object from storage (or it will just return this object.)
+     * @returns {Object} Course object.
+     */
+    this.getSaved = async() => {
+        try
+        {
+            let storedCourse = storageService.courses.get(this.name)
+
+            this.totalListeningTime = storedCourse.totalListeningTime
+        }
+        catch
+        {
+            return this
+        }
     }
 
     let getSavedLessonsInternal = (lessons, index, callback, onEndCallback) => {
