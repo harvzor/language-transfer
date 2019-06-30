@@ -8,6 +8,7 @@
     "moment": "^2.23.0",
     "nosleep.js": "^0.7.0",
     "react": "^16.6.3",
+    "react-animated-checkbox": "^0.1.4",
     "react-dom": "^16.6.3",
     "react-ga": "^2.5.7",
     "react-minimal-pie-chart": "^3.5.0",
@@ -30,8 +31,5 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "devDependencies": {
-    "react-animated-checkbox": "^0.1.4"
-  }
+  ]
 }
