@@ -1,7 +1,7 @@
 # Custom Language Transfer specific stuff
 
-/ClientApp/public/audio/
-
+*.mp3
+*.webm
 
 /Properties/launchSettings.json
 
