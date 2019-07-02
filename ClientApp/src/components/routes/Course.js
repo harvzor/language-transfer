@@ -109,9 +109,16 @@ class Course extends Component {
 
         return <div>
             <h3>Your progress:</h3>
-            <p>Time spent listening: { this.renderFriendlyTime(this.state.course.totalListeningTime) }</p>
+            { this.renderTimeSpentListening() }
             { this.renderPieChart() }
         </div>
+    }
+    renderTimeSpentListening() {
+        if (this.state.course.totalListeningTime === 0) {
+            return
+        }
+
+        return <p>Time spent listening: { this.renderFriendlyTime(this.state.course.totalListeningTime) }</p>
     }
     renderPieChart() {
         if (this.state.course.calculateCompletionPercentage() === 0) {
