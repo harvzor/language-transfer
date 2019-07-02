@@ -1,30 +1,32 @@
 import dbService from './dbService'
 import Lesson from '../models/LessonModel'
+import Course from '../models/CourseModel'
 
 /**
  * High level API for storing structured information in various places (Indexed DB or Local Storage).
  */
 var storage = function() {
     let courses = function() {
-        let key = 'courses'
+        let get = async(name) => {
+            let course = await dbService.courses.get(name)
 
-        let get = () => {
-            return JSON.parse(localStorage.getItem(key))
+            if (course === null)
+                return null
+
+            return new Course(course)
         }
 
-        let set = (data) => {
-            localStorage.setItem(key, JSON.stringify(data))
+        let set = (course) => {
+            dbService.courses.set(course)
         }
 
         return {
-            get: get,
-            set: set
+            get,
+            set
         }
     }()
 
     let lessons = function() {
-        //let key = 'tracks'
-
         let getAll = async() => {
             return (await dbService.getAllLessons())
                 .map(lesson => new Lesson(lesson))

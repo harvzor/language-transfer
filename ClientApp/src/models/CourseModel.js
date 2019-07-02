@@ -19,7 +19,7 @@ var Course = function(course) {
     /**
      * Total seconds this user has listened to this course for.
     */
-    this.totalListeningTime = 0
+    this.totalListeningTime = course.totalListeningTime || 0
 
     /**
      * Get the percentage of complete lessons.
@@ -51,7 +51,7 @@ var Course = function(course) {
     this.getSaved = async() => {
         try
         {
-            let storedCourse = storageService.courses.get(this.name)
+            let storedCourse = await storageService.courses.get(this.name)
 
             this.totalListeningTime = storedCourse.totalListeningTime
         }

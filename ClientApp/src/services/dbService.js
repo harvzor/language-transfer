@@ -9,10 +9,27 @@ var dbService = function() {
     db
         .version(1)
         .stores({
+            courses: 'name',
             // Audio is deliberately not indexed.
             // https://dexie.org/docs/Version/Version.stores()#warning
             lessons: '[lessonId+courseName]'
         })
+
+    let courses = function() {
+        let get = async(name) => {
+            return db.courses.get({ name: name })
+        }
+
+        let set = async(course) => {
+            return await db.courses
+                .put(course)
+        }
+
+        return {
+            get,
+            set
+        }
+    }()
 
     let getLesson = async(lessonId, courseName) => {
         return db.lessons.get({ lessonId: lessonId, courseName: courseName })
@@ -35,6 +52,7 @@ var dbService = function() {
     */
 
     return {
+        courses,
         getLesson: getLesson,
         getAllLessons: getAllLessons,
         setLesson: setLesson

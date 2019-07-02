@@ -20,6 +20,10 @@ class Course extends Component {
 
                 course.getSaved()
 
+                // this.setState(() => ({
+                //     course: course
+                // }))
+
                 this.props.updateTitle(course.title)
 
                 course.getSavedLessons(c => {
