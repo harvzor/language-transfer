@@ -69,27 +69,17 @@ var Lesson = function(lesson) {
     }
 
     /**
-     * Get the raw object (without functions), useful for saving to storage.
-     * @returns {Object}
-     */
-    this.getBasicObject = () => {
-        let l = {}
-
-        for (let key in this) {
-            if (typeof this[key] !== 'function') {
-                l[key] = this[key]
-            }
-        }
-
-        return l
-    }
-
-    /**
      * Save this lesson to storage.
      * @returns {void}
      */
     this.save = async() => {
-        storageService.lessons.set(this.getBasicObject())
+        storageService.lessons.set({
+            lessonId: this.lessonId,
+            courseName: this.courseName,
+            completed: this.completed,
+            downloaded: this.downloaded,
+            audio: this.audio
+        })
     }
 
     /**
@@ -99,7 +89,13 @@ var Lesson = function(lesson) {
     this.getSaved = async() => {
         try
         {
-            return await storageService.lessons.get(this.lessonId, this.courseName)
+            let storedLesson = await storageService.lessons.get(this.lessonId, this.courseName)
+
+            this.completed = storedLesson.completed
+            this.downloaded = storedLesson.downloaded
+            this.audio = storedLesson.audio
+
+            return this
         }
         catch
         {

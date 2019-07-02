@@ -54,6 +54,8 @@ var Course = function(course) {
             let storedCourse = await storageService.courses.get(this.name)
 
             this.totalListeningTime = storedCourse.totalListeningTime
+
+            return this
         }
         catch
         {
