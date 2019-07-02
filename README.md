@@ -57,6 +57,10 @@ Make sure to `npm install` before running the script.
 
 The `mp3` audio files were downloaded from SoundCloud.
 
+#### WEBM
+
+Webm (Vorbis or Opus) isn't supported by IOS! Which sucks because `.webm` files are much smaller than `.mp3` files.
+
 I then converted to `webm` as [recommended by hower.js](https://github.com/goldfire/howler.js#format-recommendations):
 
 ```
