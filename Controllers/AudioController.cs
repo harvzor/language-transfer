@@ -65,11 +65,16 @@ namespace language_transfer.Controllers
             var key = CacheKey + $"/course/{courseName}/lesson/" + id;
 
             if (_cache.TryGetValue(key, out dynamic result))
-            {
                 return result;
-            }
 
-            var lesson = "data:audio/webm;base64," + Convert.ToBase64String(_audioService.GetLesson(courseName, id));
+            var lesson = "";
+
+            if (id.EndsWith("mp3"))
+                lesson = "data:audio/mpeg;base64," + Convert.ToBase64String(_audioService.GetLesson(courseName, id));
+            else if (id.EndsWith("webm"))
+                lesson = "data:audio/webm;base64," + Convert.ToBase64String(_audioService.GetLesson(courseName, id));
+            else
+                throw new NotImplementedException("That file type is not covered.");
 
             _cache.Set(key, lesson, TimeSpan.FromDays(1));
 

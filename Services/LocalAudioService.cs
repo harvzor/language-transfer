@@ -83,7 +83,6 @@ namespace language_transfer.Services
 
         public byte[] GetLesson(string courseName, string id)
         {
-            // TODO: fix path
             return File.ReadAllBytes(HostingEnvironment.ContentRootPath + ClientAppPublicPath  + $"/audio/{courseName}/" + id);
         }
     }
