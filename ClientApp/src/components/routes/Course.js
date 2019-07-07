@@ -8,6 +8,7 @@ import Audio from '../../services/AudioService'
 
 class Course extends Component {
     state = {
+        selectedLesson: null,
         trackSelected: false,
         course: new CourseModel()
     }
@@ -104,7 +105,8 @@ class Course extends Component {
     }
     trackSelectedEvent = (lesson) => {
         this.setState(() => ({
-            trackSelected: true
+            trackSelected: true,
+            selectedLesson: lesson.lessonId
         }))
 
         Audio.changeTrack(lesson)
@@ -172,6 +174,7 @@ class Course extends Component {
                     <h3>Select a track to be played:</h3>
                     <TrackList
                         lessons={this.state.course.lessons}
+                        selectedLesson={this.state.selectedLesson}
                         trackSelected={this.trackSelectedEvent}
                         downloadTrackEvent={this.downloadTrackEvent}
                         updateCompletionVisualisation={this.updateCompletionVisualisation}

@@ -2,15 +2,7 @@ import React, { Component } from 'react'
 import TrackItem from './TrackItem'
 
 class TrackList extends Component {
-    state = {
-        // The index of the selected track.
-        selected: null
-    }
     handleTrackClick = (lesson) => {
-        this.setState(() => ({
-            selected: lesson.lessonId - 1
-        }))
-
         this.props.trackSelected(lesson)
     }
     render() {
@@ -18,7 +10,7 @@ class TrackList extends Component {
             <ul>
                 {this.props.lessons.map((lesson, i) =>
                     <TrackItem
-                        selected={i === this.state.selected}
+                        selected={lesson.lessonId === this.props.selectedLesson}
                         trackSelected={this.handleTrackClick}
                         updateCompletionVisualisation={this.props.updateCompletionVisualisation}
                         lesson={lesson}
