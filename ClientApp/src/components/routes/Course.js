@@ -12,9 +12,10 @@ class Course extends Component {
         course: new CourseModel()
     }
     componentDidMount = () => {
-        const id = this.props.match.params.playlistId
+        const playlistId = this.props.match.params.playlistId
+        const lessonId = parseInt(this.props.match.params.lessonId)
 
-        api.getCourse(id)
+        api.getCourse(playlistId)
             .then(apiCourse => {
                 let course = new CourseModel(apiCourse)
 
@@ -30,10 +31,21 @@ class Course extends Component {
                     this.setState(() => ({
                         course: c
                     }))
+
+                }, () => {
+                    if (lessonId) {
+                        const selectedLesson = this.state.course.lessons
+                            .find(lesson => lesson.lessonId === lessonId)
+
+                        if (selectedLesson) {
+                            this.trackSelectedEvent(selectedLesson)
+                        }
+                    }
                 })
             })
 
         this.trackTotalListeningTime()
+
     }
     renderFriendlyTime = (seconds) => {
         seconds = parseInt(seconds, 10);

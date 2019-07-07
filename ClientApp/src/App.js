@@ -5,7 +5,7 @@ import Home from './components/routes/Home'
 import Course from './components/routes/Course'
 import FullscreenButton from './components/FullscreenButton'
 import Settings from './components/Settings'
-import createBrowserHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 import ReactGA from 'react-ga';
 
 class App extends Component {
@@ -50,7 +50,7 @@ class App extends Component {
                         <Route exact path="/" render={() => (
                             <h1 className="home">Language Transfer</h1>
                         )} />
-                        <Route path="/course/:playlistId" render={() => (
+                        <Route path={["/course/:playlistId/:lessonId", "/course/:playlistId"]} render={() => (
                             <div>
                                 <Link to={'/'} className="navigation-back borders-right">
                                     &lt;
@@ -65,7 +65,7 @@ class App extends Component {
                     <Settings visible={this.state.settingsVisible} />
                     <Route exact path="/" component={Home} />
                     {/* https://stackoverflow.com/questions/27864720/react-router-pass-props-to-handler-component */}
-                    <Route path="/course/:playlistId" render={(props) => (
+                    <Route path={["/course/:playlistId/:lessonId", "/course/:playlistId"]} render={(props) => (
                         <Course updateTitle={this.updateTitle} {...props} />
                     )} />
                 </div>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import CheckBox from "react-animated-checkbox"
 import Audio from '../services/AudioService'
+import { Link } from 'react-router-dom'
 
 class TrackItem extends Component {
     state = {
@@ -23,8 +24,6 @@ class TrackItem extends Component {
         })
     }
     handleClick = (event) => {
-        event.preventDefault()
-
         this.props.trackSelected(this.props.lesson)
     }
     downloadHandleClick = async(event) => {
@@ -75,7 +74,8 @@ class TrackItem extends Component {
     render() {
         return (
             <li className={ "borders li-flex" + (this.props.selected ? " selected" : "") }>
-                <a href={'#' + this.props.lesson.lessonId} onClick={this.handleClick}>{this.props.lesson.title}</a>
+                <Link to={'/course/german/' + this.props.lesson.lessonId} onClick={this.handleClick}>{this.props.lesson.title}</Link>
+                {/* <a href={'#' + this.props.lesson.lessonId} onClick={this.handleClick}>{this.props.lesson.title}</a> */}
                 <a href={'#' + this.props.lesson.lessonId} className="borders-left" onClick={this.downloadHandleClick}>{this.downloadText()}</a>
                 <a href={'#' + this.props.lesson.lessonId} className="borders-left" onClick={this.completionHandleClick}>
                     <CheckBox
