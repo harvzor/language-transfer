@@ -7,6 +7,6 @@ namespace language_transfer
     public class Data
     {
         [JsonProperty("courses")]
-        public IEnumerable<Course> Courses { get; set; }
+        public List<Course> Courses { get; set; }
     }
 }

@@ -17,6 +17,6 @@ namespace language_transfer
         public string Path { get; set; }
 
         [JsonProperty("lessons")]
-        public IEnumerable<Lesson> Lessons { get; set; }
+        public List<Lesson> Lessons { get; set; }
     }
 }

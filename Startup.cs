@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 
 namespace language_transfer
 {
@@ -72,6 +73,9 @@ namespace language_transfer
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            // Load the data of the application off the main thread so startup isn't slowed down but the first user should get fast data.
+            Task.Run(() => app.ApplicationServices.GetService<IAudioService>().GetCourses());
         }
     }
 }

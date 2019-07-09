@@ -12,30 +12,21 @@ namespace language_transfer.Controllers
     [ApiController]
     public class AudioController : ControllerBase
     {
-        private readonly IAudioService _audioService;
-        private readonly IMemoryCache _cache;
-        private const string CacheKey = "audio";
+        private readonly IAudioService AudioService;
+        private readonly IMemoryCache MemoryCache;
+        private const string CacheKey = "AudioController";
 
         public AudioController(IMemoryCache memoryCache, IAudioService audioService)
         {
-            _audioService = audioService;
-            _cache = memoryCache;
+            this.AudioService = audioService ?? throw new ArgumentNullException(nameof(audioService));
+            this.MemoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
         }
 
         [HttpGet("Courses")]
         [ResponseCache(Duration = 300)]
         public ActionResult<IEnumerable<Course>> Courses()
         {
-            var key = CacheKey + "/courses";
-
-            if (_cache.TryGetValue(key, out dynamic result))
-            {
-                return result;
-            }
-
-            var courses = _audioService.GetCourses();
-
-            _cache.Set(key, courses, TimeSpan.FromDays(1));
+            var courses = AudioService.GetCourses();
 
             return new ActionResult<IEnumerable<Course>>(courses);
         }
@@ -44,16 +35,7 @@ namespace language_transfer.Controllers
         [ResponseCache(Duration = 300)]
         public ActionResult<Course> Course(string name)
         {
-            var key = CacheKey + "/course/" + name;
-
-            if (_cache.TryGetValue(key, out dynamic result))
-            {
-                return result;
-            }
-
-            var course = _audioService.GetCourse(name);
-
-            _cache.Set(key, course, TimeSpan.FromDays(1));
+            var course = AudioService.GetCourse(name);
 
             return new ActionResult<Course>(course);
         }
@@ -64,19 +46,19 @@ namespace language_transfer.Controllers
         {
             var key = CacheKey + $"/course/{courseName}/lesson/" + id;
 
-            if (_cache.TryGetValue(key, out dynamic result))
+            if (MemoryCache.TryGetValue(key, out dynamic result))
                 return result;
 
             var lesson = "";
 
             if (id.EndsWith("mp3"))
-                lesson = "data:audio/mpeg;base64," + Convert.ToBase64String(_audioService.GetLesson(courseName, id));
+                lesson = "data:audio/mpeg;base64," + Convert.ToBase64String(AudioService.GetLesson(courseName, id));
             else if (id.EndsWith("webm"))
-                lesson = "data:audio/webm;base64," + Convert.ToBase64String(_audioService.GetLesson(courseName, id));
+                lesson = "data:audio/webm;base64," + Convert.ToBase64String(AudioService.GetLesson(courseName, id));
             else
                 throw new NotImplementedException("That file type is not covered.");
 
-            _cache.Set(key, lesson, TimeSpan.FromDays(1));
+            MemoryCache.Set(key, lesson, TimeSpan.FromDays(1));
 
             return new ActionResult<string>(lesson);
         }

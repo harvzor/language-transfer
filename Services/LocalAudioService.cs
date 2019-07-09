@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 
 namespace language_transfer.Services
@@ -12,48 +13,47 @@ namespace language_transfer.Services
     /// </summary>
     public class LocalAudioService : IAudioService
     {
+        private readonly IMemoryCache MemoryCache;
         private readonly IHostingEnvironment HostingEnvironment;
         private readonly Configuration Configuration;
 
-        public LocalAudioService(IHostingEnvironment env, IConfiguration configuration)
+        private const string CacheKey = "LocalAudioService";
+
+        public LocalAudioService(IMemoryCache memoryCache, IHostingEnvironment env, IConfiguration configuration)
         {
-            if (env == null)
-                throw new ArgumentNullException(nameof(env));
-
-            this.HostingEnvironment = env;
-
-            if (configuration == null)
-                throw new ArgumentNullException(nameof(configuration));
-
-            this.Configuration = configuration.Get<Configuration>();
+            this.MemoryCache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
+            this.HostingEnvironment = env ?? throw new ArgumentNullException(nameof(env));
+            this.Configuration = configuration?.Get<Configuration>() ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         private string ClientAppPublicPath => HostingEnvironment.IsProduction()
             ? "/ClientApp/build/"
             : "/ClientApp/public/";
 
-        private Data _data;
-        private Data Data
+        private Data GetData()
         {
-            get
-            {
-                if (_data == null)
+            var key = CacheKey + "/data";
+
+            if (MemoryCache.TryGetValue(key, out dynamic result))
+                return result;
+
+            var data = Configuration.Data;
+
+            data.Courses = data.Courses
+                .Select(course =>
                 {
-                    _data = Configuration.Data;
+                    var audioDir = HostingEnvironment.ContentRootPath + ClientAppPublicPath + course.Path;
 
-                    _data.Courses.ToList().ForEach(course =>
-                    {
-                        var audioDir = HostingEnvironment.ContentRootPath + ClientAppPublicPath + course.Path;
+                    var audioFilePaths = Directory.EnumerateFiles(audioDir);
 
-                        var audioFilePaths = Directory.EnumerateFiles(audioDir);
+                    /*
+                        course.Id = course.Title
+                            .ToLower()
+                            .Replace(" ", "-");
+                    */
 
-                        /*
-                            course.Id = course.Title
-                                .ToLower()
-                                .Replace(" ", "-");
-                        */
-
-                        course.Lessons = audioFilePaths.Select(audioFilePath =>
+                    course.Lessons = audioFilePaths
+                        .Select(audioFilePath =>
                         {
                             return new Lesson
                             {
@@ -63,22 +63,26 @@ namespace language_transfer.Services
                                 FileName = Path.GetFileName(audioFilePath),
                                 FileSize = Convert.ToBase64String(File.ReadAllBytes(audioFilePath)).Length
                             };
-                        });
-                    });
-                }
+                        })
+                        .ToList();
 
-                return _data;
-            }
+                    return course;
+                })
+                .ToList();
+
+            MemoryCache.Set(key, data, TimeSpan.FromDays(1));
+
+            return data;
         }
 
         public IEnumerable<Course> GetCourses()
         {
-            return Data.Courses;
+            return GetData().Courses;
         }
 
         public Course GetCourse(string name)
         {
-            return Data.Courses.FirstOrDefault(course => course.Name == name);
+            return GetData().Courses.FirstOrDefault(course => course.Name == name);
         }
 
         public byte[] GetLesson(string courseName, string id)
