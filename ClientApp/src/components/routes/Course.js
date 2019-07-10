@@ -46,7 +46,9 @@ class Course extends Component {
             })
 
         this.trackTotalListeningTime()
-
+    }
+    componentWillUnmount = () => {
+        Audio.unload()
     }
     renderFriendlyTime = (seconds) => {
         seconds = parseInt(seconds, 10);

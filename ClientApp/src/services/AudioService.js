@@ -59,7 +59,7 @@ var Audio = function () {
      * @private
      */
     let progressChange = () => {
-        if (this.isPaused || this.isLoading || this.hasEnded)
+        if (track === null || this.isPaused || this.isLoading || this.hasEnded)
             return
 
         // I'm sure this should speed up the app but it just gets slower and slower!
@@ -163,10 +163,31 @@ var Audio = function () {
 
     /**
      * Change to a given track.
-     * @param {object} lesson The lesson which should be played.
+     * @param {object} newLesson The lesson which should be played.
      * @param {string} path Path to the folder which the audio is stored.
      */
-    this.changeTrack = (lesson) => {
+    this.changeTrack = (newLesson) => {
+        this.unload()
+
+        this.trackId = newLesson.lessonId
+
+        this.hasStarted = false
+        this.isLoading = true
+
+        track = new Howl({
+            src: newLesson.downloaded
+                ? newLesson.audio
+                : `/audio/${newLesson.courseName}/${newLesson.fileName}`
+        })
+
+        setupEvents()
+        stateChange()
+    }
+
+    /**
+     * Stop playing audio and unload the track.
+     */
+    this.unload = () => {
         if (track !== null) {
             // These values cannot be put in the on stop event as the on stop event doesn't execute fast enough.
             this.isPaused = null
@@ -178,20 +199,10 @@ var Audio = function () {
             this.position = 0
 
             track.unload()
+
+            track = null
         }
 
-        this.trackId = lesson.lessonId
-
-        this.hasStarted = false
-        this.isLoading = true
-
-        track = new Howl({
-            src: lesson.downloaded
-                ? lesson.audio
-                : `/audio/${lesson.courseName}/${lesson.fileName}`
-        })
-
-        setupEvents()
         stateChange()
     }
 
